@@ -29,12 +29,11 @@ default:
   
 vary_inflation:
   n_sample_size:
+    - 250
+    - 500
     - 1000
-    - 5000
-    - 10000
-    - 25000
-    - 50000
-    - 100000
+    - 2000
+    - 4000
   inflation: [0, -1]
   effect_protect: [TRUE,FALSE]
   nat_inf_epsilon: 1
