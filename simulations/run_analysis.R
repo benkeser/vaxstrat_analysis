@@ -91,6 +91,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
     nat_inf_upper_bound_se = results$nat_inf$bound$boot_se$se_additive_upper,
     nat_inf_upper_bound_lower_ci = results$nat_inf$bound$boot_se$lower_ci_additive_upper,
     nat_inf_upper_bound_upper_ci = results$nat_inf$bound$boot_se$upper_ci_additive_upper,
+    nat_inf_upper_bound_reject = results$nat_inf$bound$reject,
     # Doomed AIPW
     doomed_pt_est = results$doomed$aipw$pt_est["additive_effect"],
     doomed_se = results$doomed$aipw$pt_est["additive_se"],
@@ -100,6 +101,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
     doomed_upper_bound_se = results$doomed$bound$boot_se$se_additive_upper,
     doomed_upper_bound_lower_ci = results$doomed$bound$boot_se$lower_ci_additive_upper,
     doomed_upper_bound_upper_ci = results$doomed$bound$boot_se$upper_ci_additive_upper,
+    doomed_upper_bound_reject = results$doomed$bound$reject,
     # Pop AIPW
     pop_pt_est = results$pop$aipw$pt_est["additive_effect"],
     pop_se = results$pop$aipw$pt_est["additive_se"],
