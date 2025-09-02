@@ -181,9 +181,10 @@ for(fname in files){
 
 # Summarize bias, variance, MSE, coverage
 summary_df <- all_result_df %>%
-  group_by(estimand, method) %>%
+  group_by(estimand, method, n) %>%
   summarise(
-    n = n(),
+    n = n[1],
+    confirm_complete = n(),
     mean_additive = mean(additive_estimate, na.rm = TRUE),
     bias_additive = mean(additive_diff, na.rm = TRUE),
     var_additive = var(additive_estimate, na.rm = TRUE),
