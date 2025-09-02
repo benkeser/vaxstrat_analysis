@@ -108,7 +108,13 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
                                   E_Y1__pop = rep(NA, nrow(grid)),
                                   E_Y0__pop = rep(NA, nrow(grid)),
                                   nat_inf_upper_bound = rep(NA, nrow(grid)),
-                                  doomed_upper_bound = rep(NA, nrow(grid))))
+                                  doomed_upper_bound = rep(NA, nrow(grid)),
+                                  nat_inf_upper_bound_mult = rep(NA, nrow(grid)),
+                                  doomed_upper_bound_mult = rep(NA, nrow(grid)),
+                                  nat_inf_lower_bound = rep(NA, nrow(grid)),
+                                  doomed_lower_bound = rep(NA, nrow(grid)),
+                                  nat_inf_lower_bound_mult = rep(NA, nrow(grid)),
+                                  doomed_lower_bound_mult = rep(NA, nrow(grid))))
   
   rhobar_v_truth <- vector("list", length = nrow(grid))
   mubar_vs_truth <- vector("list", length = nrow(grid))
@@ -169,6 +175,15 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
     truth$nat_inf_upper_bound[i] <- nat_inf_bound['additive_effect_upper']
     truth$doomed_upper_bound[i] <- doomed_bound['additive_effect_upper']
     
+    truth$nat_inf_upper_bound_mult[i] <- nat_inf_bound['mult_effect_upper']
+    truth$doomed_upper_bound_mult[i] <- doomed_bound['mult_effect_upper']
+    
+    truth$nat_inf_lower_bound[i] <- nat_inf_bound['additive_effect_lower']
+    truth$doomed_lower_bound[i] <- doomed_bound['additive_effect_lower']
+    
+    truth$nat_inf_lower_bound_mult[i] <- nat_inf_bound['mult_effect_lower']
+    truth$doomed_lower_bound_mult[i] <- doomed_bound['mult_effect_lower']
+    
   }
   
   ## Point estimates effects
@@ -176,7 +191,14 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
   truth$effect_doomed <- truth$E_Y1__doomed - truth$E_Y0__doomed
   truth$effect_protected <- truth$E_Y1__protected - truth$E_Y0__protected
   truth$effect_pop <- truth$E_Y1__pop - truth$E_Y0__pop
-
+  
+  
+  ## Point estimates effects multiplicative
+  truth$effect_nat_inf_mult <- truth$E_Y1__protected_or_doomed / truth$E_Y0__protected_or_doomed
+  truth$effect_doomed_mult <- truth$E_Y1__doomed / truth$E_Y0__doomed
+  truth$effect_protected_mult <- truth$E_Y1__protected / truth$E_Y0__protected
+  truth$effect_pop_mult <- truth$E_Y1__pop / truth$E_Y0__pop
+  
   return(truth)
 }
 
