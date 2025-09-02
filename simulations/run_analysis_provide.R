@@ -36,7 +36,10 @@ seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 setting <- Sys.getenv("SETTING")
 
 # read in config file
-config <- config::get(file = here::here("config_provide.yml"), config = setting)
+#config <- config::get(file = here::here("config_provide.yml"), config = setting)
+
+cfg <- yaml::read_yaml("config_provide.yml")
+config <- cfg[[setting]]
 
 # Create dir to save results if does not exist
 if (!file.exists(paste0(project_dir, setting))) {

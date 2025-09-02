@@ -181,6 +181,7 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
 }
 
 # test for series of inflations to find which ones make effect size 0 for each estimand
-config <- config::get(file = here::here("config_provide.yml"), config = "vary_inflation")
-truth <- get_truth_provide(config, n = 1e6)
-truth <- get_truth_generic(config, n = 1e5)
+#config <- config::get(file = here::here("config_provide.yml"), config = "vary_inflation")
+#config <- config::get(file = here::here("config_generic.yml"), config = "default")
+#truth <- get_truth_provide(config, n = 1e6)
+#truth <- get_truth_generic(config, n = 1e6)
