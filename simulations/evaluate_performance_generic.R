@@ -7,6 +7,7 @@
 
 here::i_am("evaluate_performance_generic.R")
 
+source(here::here("simulate_data.R"))
 source(here::here("get_truth.R"))
 
 library(vegrowth)
