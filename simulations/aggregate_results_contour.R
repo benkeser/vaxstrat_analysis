@@ -77,33 +77,19 @@ for(fname in files){
           res$pop$ipw$pt_est['additive_effect'],
           res$pop$aipw$pt_est['additive_effect'])
       ),
-      additive_lower_ci = c(
-        c(res$nat_inf$gcomp$boot_se$lower_ci_additive,
-          res$nat_inf$ipw$boot_se$lower_ci_additive,
-          res$nat_inf$aipw$pt_est['additive_effect'] - 1.96*res$nat_inf$aipw$pt_est['additive_se'],
-          res$nat_inf$tmle$pt_est['additive_effect'] - 1.96*res$nat_inf$tmle$pt_est['additive_se'],
-          res$nat_inf$bound$boot_se$lower_ci_additive_lower),
-        c(res$doomed$gcomp$boot_se$lower_ci_additive,
-          res$doomed$ipw$boot_se$lower_ci_additive,
-          res$doomed$aipw$pt_est['additive_effect'] - 1.96*res$doomed$aipw$pt_est['additive_se'],
-          res$doomed$bound$boot_se$lower_ci_additive_lower),
-        c(res$pop$gcomp$boot_se$lower_ci_additive,
-          res$pop$ipw$boot_se$lower_ci_additive,
-          res$pop$aipw$pt_est['additive_effect'] - 1.96*res$pop$aipw$pt_est['additive_se'])
-      ),
-      additive_upper_ci = c(
-        c(res$nat_inf$gcomp$boot_se$upper_ci_additive,
-          res$nat_inf$ipw$boot_se$upper_ci_additive,
-          res$nat_inf$aipw$pt_est['additive_effect'] + 1.96*res$nat_inf$aipw$pt_est['additive_se'],
-          res$nat_inf$tmle$pt_est['additive_effect'] + 1.96*res$nat_inf$tmle$pt_est['additive_se'],
-          res$nat_inf$bound$boot_se$upper_ci_additive_lower),
-        c(res$doomed$gcomp$boot_se$upper_ci_additive,
-          res$doomed$ipw$boot_se$upper_ci_additive,
-          res$doomed$aipw$pt_est['additive_effect'] + 1.96*res$doomed$aipw$pt_est['additive_se'],
-          res$doomed$bound$boot_se$upper_ci_additive_lower),
-        c(res$pop$gcomp$boot_se$upper_ci_additive,
-          res$pop$ipw$boot_se$upper_ci_additive,
-          res$pop$aipw$pt_est['additive_effect'] + 1.96*res$pop$aipw$pt_est['additive_se'])
+      additive_reject = c(
+        c(as.numeric(res$nat_inf$gcomp$reject$additive),
+          as.numeric(res$nat_inf$ipw$reject$additive),
+          as.numeric(res$nat_inf$aipw$reject$additive),
+          as.numeric(res$nat_inf$tmle$reject$additive),
+          as.numeric(res$nat_inf$bound$reject$additive)),
+        c(as.numeric(res$doomed$gcomp$reject$additive),
+          as.numeric(res$doomed$ipw$reject$additive),
+          as.numeric(res$doomed$aipw$reject$additive),
+          as.numeric(res$doomed$bound$reject$additive)),
+        c(as.numeric(res$pop$gcomp$reject$additive),
+          as.numeric(res$pop$ipw$reject$additive),
+          as.numeric(res$pop$aipw$reject$additive))
       ),
       # Multiplicative estimate and confidence interval
       mult_estimate = c(
@@ -120,33 +106,19 @@ for(fname in files){
           exp(as.numeric(res$pop$ipw$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$pop$aipw$pt_est['log_multiplicative_effect'])))
       ),
-      mult_lower_ci = c(
-        c(res$nat_inf$gcomp$boot_se$lower_ci_mult,
-          res$nat_inf$ipw$boot_se$lower_ci_mult,
-          exp(res$nat_inf$aipw$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$aipw$pt_est['log_multiplicative_se']),
-          exp(res$nat_inf$tmle$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$tmle$pt_est['log_multiplicative_se']),
-          res$nat_inf$bound$boot_se$lower_ci_mult_lower),
-        c(res$doomed$gcomp$boot_se$lower_ci_mult,
-          res$doomed$ipw$boot_se$lower_ci_mult,
-          exp(res$doomed$aipw$pt_est['log_multiplicative_effect'] - 1.96*res$doomed$aipw$pt_est['log_multiplicative_se']),
-          res$doomed$bound$boot_se$lower_ci_mult_lower),
-        c(res$pop$gcomp$boot_se$lower_ci_mult,
-          res$pop$ipw$boot_se$lower_ci_mult,
-          exp(res$pop$aipw$pt_est['log_multiplicative_effect'] - 1.96*res$pop$aipw$pt_est['log_multiplicative_se']))
-      ),
-      mult_upper_ci = c(
-        c(res$nat_inf$gcomp$boot_se$upper_ci_mult,
-          res$nat_inf$ipw$boot_se$upper_ci_mult,
-          exp(res$nat_inf$aipw$pt_est['log_multiplicative_effect'] + 1.96*res$nat_inf$aipw$pt_est['log_multiplicative_se']),
-          exp(res$nat_inf$tmle$pt_est['log_multiplicative_effect'] + 1.96*res$nat_inf$tmle$pt_est['log_multiplicative_se']),
-          res$nat_inf$bound$boot_se$upper_ci_mult_lower),
-        c(res$doomed$gcomp$boot_se$upper_ci_mult,
-          res$doomed$ipw$boot_se$upper_ci_mult,
-          exp(res$doomed$aipw$pt_est['log_multiplicative_effect'] + 1.96*res$doomed$aipw$pt_est['log_multiplicative_se']),
-          res$doomed$bound$boot_se$upper_ci_mult_lower),
-        c(res$pop$gcomp$boot_se$upper_ci_mult,
-          res$pop$ipw$boot_se$upper_ci_mult,
-          exp(res$pop$aipw$pt_est['log_multiplicative_effect'] + 1.96*res$pop$aipw$pt_est['log_multiplicative_se']))
+      mult_reject = c(
+        c(as.numeric(res$nat_inf$gcomp$reject$mult),
+          as.numeric(res$nat_inf$ipw$reject$mult),
+          as.numeric(res$nat_inf$aipw$reject$mult),
+          as.numeric(res$nat_inf$tmle$reject$mult),
+          as.numeric(res$nat_inf$bound$reject$mult)),
+        c(as.numeric(res$doomed$gcomp$reject$mult),
+          as.numeric(res$doomed$ipw$reject$mult),
+          as.numeric(res$doomed$aipw$reject$mult),
+          as.numeric(res$doomed$bound$reject$mult)),
+        c(as.numeric(res$pop$gcomp$reject$mult),
+          as.numeric(res$pop$ipw$reject$mult),
+          as.numeric(res$pop$aipw$reject$mult))
       )
     )
     
