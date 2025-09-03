@@ -315,8 +315,8 @@ get_truth_contour <- function(config, n = 1e7, seed = 12345){
 }
 
 # test for series of inflations to find which ones make effect size 0 for each estimand
-config <- config::get(file = here::here("config_contour.yml"), config = "contour_plot")
+# config <- config::get(file = here::here("config_contour.yml"), config = "contour_plot")
 #config <- config::get(file = here::here("config_generic.yml"), config = "violate_nat_inf")
-truth <- get_truth_contour(config, n = 1e7)
+#truth <- get_truth_contour(config, n = 1e7)
 #truth <- get_truth_provide(config, n = 1e6)
 #truth <- get_truth_generic(config, n = 1e6)

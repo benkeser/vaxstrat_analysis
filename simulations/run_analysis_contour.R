@@ -1,6 +1,7 @@
 # ------------------------------------------------------
 # Script to run simulation on cluster
 # ------------------------------------------------------
+options(echo = TRUE)
 
 # Path to installed packages on cluster
 .libPaths(c("/apps/R/4.4.0/lib64/R/site/library","/apps/R/4.4.0/lib64/R/library", "~/Rlibs_ve_trial"))
