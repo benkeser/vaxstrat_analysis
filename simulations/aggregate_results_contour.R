@@ -12,7 +12,7 @@ library(vegrowth)
 library(dplyr)
 
 # Path to projects folder where results will be saved
-project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/contour/"
+project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/contour"
 
 # command args config setting
 cargs <- commandArgs(trailingOnly = TRUE)
@@ -39,7 +39,8 @@ for(fname in files){
   grid <- expand.grid(seed = seed, 
                       n_sample_size = as.numeric(config$n_sample_size),
                       effect_protect = config$effect_protect,
-                      inflation = as.numeric(config$inflation),
+                      doomed_inflation = as.numeric(config$doomed_inflation),
+                      nat_inf_inflation = as.numeric(config$nat_inf_inflation),
                       nat_inf_epsilon = as.numeric(config$nat_inf_epsilon),
                       doomed_epsilon = as.numeric(config$doomed_epsilon))
   
