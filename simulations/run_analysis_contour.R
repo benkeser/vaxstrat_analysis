@@ -40,8 +40,8 @@ grid <- expand.grid(seed = 12345,
                     doomed_epsilon = as.numeric(config$doomed_epsilon),
                     nat_inf_epsilon = as.numeric(config$nat_inf_epsilon))
 
-rhobar_v_truth <- vector("list", length = nrow(grid))
-mubar_vs_truth <- vector("list", length = nrow(grid))
+# eliminate combos where inflation in doomed > inflation in nat_inf
+grid <- subset(grid, doomed_inflation <= nat_inf_inflation)
 
 results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
   big_data <- simulate_data_contour(seed = grid$seed[i],
@@ -103,7 +103,12 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
     big_data$Z == 0 
   ])
   
+  return(truth)
+  
 }, grid = grid, future.seed = TRUE)
+
+
+truth <- do.call(rbind, results)
 
 ## Point estimates effects
 truth$effect_nat_inf <- truth$E_Y1__protected_or_doomed - truth$E_Y0__protected_or_doomed
@@ -120,4 +125,4 @@ truth$effect_pop_mult <- truth$E_Y1__pop / truth$E_Y0__pop
 
 # full_results <- do.call(rbind, results)
 
-saveRDS(truth, paste0("results/contour/", setting, "_overall_seed_", seed, ".Rds"))
+saveRDS(truth, paste0("results/contour/", setting, "_truth.Rds"))
