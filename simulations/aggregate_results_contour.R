@@ -4,7 +4,6 @@
 here::i_am("aggregate_results_contour.R")
 
 source(here::here("simulate_data.R"))
-source(here::here("get_truth.R"))
 
 library(vegrowth)
 library(dplyr)
