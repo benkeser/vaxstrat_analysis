@@ -51,7 +51,9 @@ if(sim_type == "generic"){
   grid <- subset(grid, doomed_inflation <= protected_inflation)
 }
 
-results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type){
+results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type, config){
+  
+  library(SuperLearner)
   
   if(sim_type == "generic"){
     big_data <- simulate_data_contour(seed = grid$seed[i],
@@ -62,7 +64,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type)
                                       doomed_epsilon = grid$doomed_epsilon[i],
                                       n = 2000)
     
-    results <- vegrowth::vegrowth(data = data, 
+    results <- vegrowth::vegrowth(data = big_data, 
                                   Y_name = "Y",
                                   Z_name = "Z",
                                   S_name = "S",
@@ -92,7 +94,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type)
                                       doomed_epsilon = grid$doomed_epsilon[i],
                                       n = 700)
     
-    results <- vegrowth::vegrowth(data = data, 
+    results <- vegrowth::vegrowth(data = big_data, 
                                   Y_name = "any_abx_wk52",
                                   Z_name = "rotaarm",
                                   S_name = "rotaepi",
@@ -128,7 +130,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type)
   
   return(results_df)
 
-}, grid = grid, sim_type = sim_type, future.seed = TRUE)
+}, grid = grid, sim_type = sim_type, config = config, future.seed = TRUE)
 
 results <- do.call(rbind, results)
 
