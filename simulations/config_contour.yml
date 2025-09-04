@@ -11,6 +11,26 @@ default:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  S_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  S_Z_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  Y_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  Y_Z_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"
@@ -27,12 +47,26 @@ provide_contour_plot:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
-  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
-  Y_X_S1: "Y ~ X1 * X2 * X3"
-  Y_X_S0: "Y ~ X1 * X2 * X3"
-  S_X: "S ~ X1 * X2 * X3"
-  S_Z_X: NULL
-  Z_X: "Z ~ X1 * X2 * X3"
+  S_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  S_Z_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  Y_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
+  Y_Z_X_library:
+    - "SL.glm"
+    - "SL.earth"
+    - "SL.gam"
+    - "SL.step.forward"
   
 generic_contour_plot:
   sim_type: "generic"
