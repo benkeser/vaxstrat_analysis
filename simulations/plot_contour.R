@@ -7,15 +7,16 @@ here::i_am("plot_contour.R")
 source(here::here("get_truth.R"))
 
 cfg <- yaml::read_yaml("config_contour.yml")
-config <- cfg[["contour_plot"]]
+config <- cfg[["provide_contour_plot"]]
 
-results <- readRDS(here::here("results/contour/contour_plot_truth.Rds"))
+truth <- readRDS(here::here("results/contour/provide_contour_plot_truth.Rds"))
+#results <- readRDS(here::here("results/contour/contour_plot_truth.Rds"))
 
-str(results)
+str(truth)
 
 # contour plot where x axis is nat_inf_inflation, y axis is doomed_inflation, z is effect_nat_inf
 
-ggplot(results, aes(x = nat_inf_inflation,
+ggplot(truth, aes(x = protected_inflation,
                     y = doomed_inflation,
                     z = effect_nat_inf)) +
   #geom_contour_filled(bins = 5) +  # filled contour plot
