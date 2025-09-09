@@ -26,8 +26,9 @@ simulate_data_provide <- function(seed = 12345,
   data$wk10_haz <- rnorm(n, mean = -0.97, sd = 0.90)
   
   # Gender - Bernoulli(0.5)
+  # let 0 = female, 1 = male
   data$gender <- rbinom(n, 1, 0.5)
-  data$gender <- ifelse(data$gender == 0, "Female", "Male")
+  #data$gender <- ifelse(data$gender == 0, "Female", "Male")
   
   # num_hh_sleep
   # NegativeBinomial(mu = 5.26, sigma = 2.5) - discrete, minimum of 1
@@ -65,12 +66,12 @@ simulate_data_provide <- function(seed = 12345,
   # chatgpt recommends softmax? to guarantee [0,1]
 
   # adjusted from -2.16 to -1.2 to try to get marginal probability closer to observed
-  log_odds_doomed__x <- -1.2 + 0.81*as.numeric(data$gender == "Male") +
+  log_odds_doomed__x <- -1.2 + 0.81*as.numeric(data$gender == 1) +
     0.18*data$wk10_haz +
     0.06*data$num_hh_sleep 
   
   # adjusted from 1.29 to 1.5 to try to get marginal probability closer to observed
-  log_odds_immune__x <- 1.5 - 0.30*as.numeric(data$gender == "Male") +
+  log_odds_immune__x <- 1.5 - 0.30*as.numeric(data$gender == 1) +
     0.10*data$wk10_haz -
     0.08*data$num_hh_sleep 
   
@@ -128,7 +129,7 @@ simulate_data_provide <- function(seed = 12345,
   # violate hudgens:
   # P(Y(0) = 1 | Doomed)
   data$p_abx_0__doomed <-  plogis(-0.70 +
-                                    0.78 * as.numeric(data$gender == "Male") +
+                                    0.78 * as.numeric(data$gender == 1) +
                                     -1.44 * data$wk10_haz +
                                     0.49 * data$num_hh_sleep)
   
@@ -152,7 +153,7 @@ simulate_data_provide <- function(seed = 12345,
   # NEW / CHECK IF OK- flag to make protected effect = 0??
   if(effect_protect){
     data$p_abx_01__immune <- plogis(-0.29 +
-                                      0.41 * as.numeric(data$gender == "Male") +
+                                      0.41 * as.numeric(data$gender == 1) +
                                       -0.10 * data$wk10_haz +
                                       0.13 * data$num_hh_sleep)
   } else{
