@@ -36,12 +36,14 @@ SL.earth.mod <- function (Y, X, newX, family, obsWeights, id, degree = 2, penalt
 predict.SL.earth.mod <- function (object, newdata, ...) 
 {
   #.SL.require("earth")
-  if(object$msg == "All Y == 1"){
+  if(is.null(object$msg)){
+    pred <- predict(object$object, newdata = newdata, type = "response")
+  } else if(object$msg == "All Y == 1"){
     pred <- rep(1, nrow(newdata))
   } else if(object$msg == "All Y == 0"){
     pred <- rep(0, nrow(newdata))
   } else{
-    pred <- predict(object$object, newdata = newdata, type = "response")
+    pred <- NA
   }
   
   return(pred)
