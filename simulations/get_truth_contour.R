@@ -9,9 +9,17 @@ source(here::here("simulate_data.R"))
 devtools::load_all("../../shigella_projects/packages/vegrowth/")
 
 library(SuperLearner)
+library(future.apply)
+
+options(future.globals.maxSize = 2 * 1024^3)  # 2GB
+options(future.globals.onReference = "ignore")
+
+ncores <- 3
+print(ncores)
+plan(multisession, workers = ncores)
 
 # set to "provide_contour_plot" or "generic_contour_plot"; set n large (but if too large won't run well)
-setting <- "provide_contour_plot_more_immune_higher_VE"
+setting <- "provide_contour_plot"
 n <- 1e6
 seed <- 12345
 
@@ -35,7 +43,7 @@ if(sim_type == "generic"){
   grid <- subset(grid, doomed_inflation <= protected_inflation)
 }
 
-results <- lapply(1:nrow(grid), function(i, grid, sim_type, n){
+results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type, n){
   
   truth <- cbind(grid[i,], data.frame(E_Y1__protected_or_doomed = rep(NA, 1),
                                       E_Y0__protected_or_doomed = rep(NA, 1),
@@ -154,7 +162,7 @@ results <- lapply(1:nrow(grid), function(i, grid, sim_type, n){
   
   return(truth)
   
-}, grid = grid, sim_type = sim_type, n = n)
+}, grid = grid, sim_type = sim_type, n = n, future.seed = TRUE)
 
 truth <- do.call(rbind, results)
 
