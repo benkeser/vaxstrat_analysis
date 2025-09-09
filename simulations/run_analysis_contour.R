@@ -58,6 +58,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type,
   
   library(SuperLearner)
   library(earth)
+  source(here::here("SL.wrappers.R"))
   
   if(sim_type == "generic"){
     big_data <- simulate_data_contour(seed = grid$seed[i],
