@@ -98,45 +98,24 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type,
                                       protected_delta = grid$protected_delta[i],
                                       n = 700)
     
-    results <- tryCatch({
-      vegrowth::vegrowth(
-        data = big_data, 
-        Y_name = "any_abx_wk52",
-        Z_name = "rotaarm",
-        S_name = "rotaepi",
-        X_name = c("wk10_haz", "gender", "num_hh_sleep"),
-        estimand = c("nat_inf", "doomed", "pop"),
-        method = c("aipw"),
-        n_boot = 1000,
-        seed = seed,
-        return_se = TRUE,
-        ml = TRUE,
-        Y_Z_X_library = config$Y_Z_X_library,
-        Y_X_library = config$Y_X_library, 
-        S_X_library = config$S_X_library,
-        S_Z_X_library = config$S_Z_X_library,
-        family = "binomial",
-        return_models = FALSE,
-        effect_dir = "negative"
-      )
-    }, error = function(e) {
-      # Return default dummy results if vegrowth fails
-      list(
-        nat_inf = list(aipw = list(
-          pt_est = c(additive_effect = NA, additive_se = NA),
-          reject = list(additive = FALSE)
-        )),
-        doomed = list(aipw = list(
-          pt_est = c(additive_effect = NA, additive_se = NA),
-          reject = list(additive = FALSE)
-        )),
-        pop = list(aipw = list(
-          pt_est = c(additive_effect = NA, additive_se = NA),
-          reject = list(additive = FALSE)
-        ))
-      )
-    })
-    
+    results <- vegrowth::vegrowth(data = big_data, 
+                                  Y_name = "any_abx_wk52",
+                                  Z_name = "rotaarm",
+                                  S_name = "rotaepi",
+                                  X_name = c("wk10_haz", "gender", "num_hh_sleep"),
+                                  estimand = c("nat_inf", "doomed", "pop"),
+                                  method = c("aipw"),
+                                  n_boot = 1000,
+                                  seed = seed,
+                                  return_se = TRUE,
+                                  ml = TRUE,
+                                  Y_Z_X_library = config$Y_Z_X_library,
+                                  Y_X_library = config$Y_X_library, 
+                                  S_X_library = config$S_X_library,
+                                  S_Z_X_library = config$S_Z_X_library,
+                                  family = "binomial",
+                                  return_models = FALSE,
+                                  effect_dir = "negative")
   }
   
   results_df <- grid[i,]
