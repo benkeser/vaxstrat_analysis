@@ -50,8 +50,8 @@ if (!file.exists(paste0(project_dir, setting))) {
 grid <- expand.grid(seed = seed, 
                     n_sample_size = as.numeric(config$n_sample_size),
                     effect_protect = config$effect_protect,
-                    inflation = as.numeric(config$inflation),
-                    nat_inf_epsilon = as.numeric(config$nat_inf_epsilon),
+                    doomed_inflation = as.numeric(config$doomed_inflation),
+                    protected_epsilon = as.numeric(config$protected_epsilon),
                     doomed_epsilon = as.numeric(config$doomed_epsilon))
 
 results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
@@ -60,8 +60,8 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
   
   data <- simulate_data_generic(seed = grid$seed[i],
                                 effect_protect = grid$effect_protect[i],
-                                inflation = grid$inflation[i],
-                                nat_inf_epsilon = grid$nat_inf_epsilon[i], 
+                                doomed_inflation = grid$doomed_inflation[i],
+                                protected_epsilon = grid$protected_epsilon[i], 
                                 doomed_epsilon = grid$doomed_epsilon[i],
                                 n = grid$n_sample_size[i])
   
@@ -71,7 +71,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 S_name = "S",
                                 X_name = c("X1", "X2", "X3"),
                                 estimand = c("nat_inf", "doomed", "pop"),
-                                method = c("gcomp", "ipw", "aipw", "tmle", "bound"),
+                                method = c("gcomp", "ipw", "aipw", "tmle"),
                                 n_boot = 1000,
                                 seed = seed,
                                 return_se = TRUE,

@@ -59,7 +59,7 @@ deltas <- expand.grid(
 #                      protected_delta = c(-0.13, -0.11, -0.17, 0.53, -0.17, -1.09))
 
 deltas <- expand.grid(immune_delta = seq(-2, 2, by =0.01),
-                      protected_delta = seq(-1.5, 1, by = 0.01))
+                      protected_delta = seq(-1.5, 2, by = 0.01))
 
 deltas$doomed <- NA
 deltas$immune <- NA
@@ -107,3 +107,9 @@ best_deltas(deltas, doomed = 0.07, immune = 0.80, protected = 0.13)
 
 best_deltas(deltas, doomed = 0.15, immune = 0.70, protected = 0.15)
 best_deltas(deltas, doomed = 0.05, immune = 0.70, protected = 0.25)
+
+
+best_deltas(deltas, doomed = 0.2, immune = 0.60, protected = 0.2)
+
+
+best_deltas(deltas, doomed = 0.06, immune = 0.60, protected = 0.34)

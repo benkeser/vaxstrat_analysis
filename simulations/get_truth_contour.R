@@ -14,7 +14,7 @@ library(future.apply)
 options(future.globals.maxSize = 2 * 1024^3)  # 2GB
 options(future.globals.onReference = "ignore")
 
-ncores <- 4
+ncores <- 5
 print(ncores)
 plan(multisession, workers = ncores)
 
@@ -31,7 +31,9 @@ settings <- c("provide_immune_30_ve_66__2",
               "provide_immune_50_ve_66__2",
               "provide_immune_60_ve_66__2",
               "provide_immune_70_ve_66__2",
-              "provide_immune_80_ve_66__2")
+              "provide_immune_80_ve_66__2",
+              "provide_immune_60_ve_50__2",
+              "provide_immune_60_ve_85__2")
 
 for(setting in settings){
   config <- cfg[[setting]]
