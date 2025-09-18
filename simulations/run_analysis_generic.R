@@ -70,8 +70,8 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 Z_name = "Z",
                                 S_name = "S",
                                 X_name = c("X1", "X2", "X3"),
-                                estimand = c("nat_inf", "doomed", "pop"),
-                                method = c("gcomp", "ipw", "aipw", "tmle"),
+                                estimand = config$estimand,
+                                method = config$method,
                                 n_boot = 1000,
                                 seed = seed,
                                 return_se = TRUE,
@@ -84,7 +84,8 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 Z_X_model = config$Z_X, 
                                 family = "binomial",
                                 return_models = FALSE,
-                                effect_dir = "positive")
+                                effect_dir = "positive",
+                                epsilon = grid$protected_epsilon[i])
   
   # save results object, can splice together pieces to get bias, coverage, etc. later
   # except this is unnecessary? object not that big

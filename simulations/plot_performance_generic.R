@@ -11,13 +11,13 @@ setting <- cargs[[1]]
 cfg <- yaml::read_yaml("config_generic.yml")
 config <- cfg[[setting]]
 
-df <- readRDS(paste0("results/generic/", setting, "_summary.Rds"))
+df <- readRDS(paste0("results/generic/", setting, "_summary.Rds")) %>%
+  filter(method %in% c("gcomp", "tmle"))
 
 # Pivot additive columns only
 df_add <- df %>%
-  select(estimand, method, n, mean_additive, bias_additive, var_additive, coverage_additive) %>%
+  select(estimand, method, n, bias_additive, var_additive, coverage_additive) %>%
   rename(
-    mean = mean_additive,
     bias = bias_additive,
     var = var_additive,
     coverage = coverage_additive
@@ -32,7 +32,6 @@ df_add <- df %>%
     method = case_when(
       method == "aipw" ~ "AIPW",
       method == "tmle" ~ "TMLE",
-      method == "lower bound" ~ "Lower Bound",
       method == "ipw" ~ "IPW",
       method == "gcomp" ~ "G-computation",
       TRUE ~ method  
@@ -41,12 +40,12 @@ df_add <- df %>%
 
 # Function to create a performance plot
 plot_performance <- function(df, y_var, y_label) {
-  ggplot(df, aes(x = n, y = .data[[y_var]], color = method)) +
-    geom_line(size = 1) +
-    geom_point(size = 2) +
+  ggplot(df, aes(x = n, y = .data[[y_var]], color = method, linetype = method, shape = method)) +
+    geom_line(size = 1, alpha = 0.9) +
+    geom_point(size = 2.5, alpha = 0.9) +
     facet_wrap(~estimand, scales = "free_y") +
-    scale_x_continuous(breaks = unique(df$n)) +
-    labs(x = "Sample size (n)", y = y_label, color = "Method") +
+    scale_x_log10(breaks = unique(df$n)) + 
+    labs(x = "Sample size (n)", y = y_label, color = "Method", linetype = "Method", shape = "Method") +
     theme_minimal(base_size = 12) +
     theme(legend.position = "bottom")
 }
