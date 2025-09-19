@@ -31,7 +31,7 @@ plan(multisession, workers = ncores)
 # future::plan("multicore", workers = ncores)
 
 # Path to projects folder where results will be saved
-project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic/"
+project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic_new/"
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 setting <- Sys.getenv("SETTING")
 
