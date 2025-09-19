@@ -351,14 +351,14 @@ simulate_data_generic <- function(seed = 12345,
   # X2 - Bernoulli(0.25)
   # X3 - Bernoulli(0.75)
   
-  data$X1 <- rbinom(n, 3, 0.25)
-  data$X2 <- rbinom(n, 1, 0.25)
-  data$X3 <- rbinom(n, 1, 0.75)
+  data$X1 <- rbinom(n, 3, 0.5)
+  data$X2 <- rbinom(n, 1, 0.5)
+  data$X3 <- rbinom(n, 1, 0.5)
   
   # Principal Strata ------------------------------------------------------------
   
-  data$p_doomed__x <- plogis(-1 + 0.25*data$X1 - 0.4*data$X2 - 0.2*data$X3)
-  data$p_immune__x <- plogis(-0.5 + -0.5*data$X1 + 0.25*data$X2 + 0.2*data$X3)
+  data$p_doomed__x <- plogis(-1 + 0.5*data$X1 - 1*data$X1*data$X2 - 0.5*data$X3)
+  data$p_immune__x <- plogis(-1 + 0.5*data$X1 - 1*data$X3*data$X1 - 0.5*data$X3)
   data$p_protected__x <- 1 - data$p_doomed__x - data$p_immune__x
   
   # Sample the strata
@@ -385,8 +385,8 @@ simulate_data_generic <- function(seed = 12345,
   # violate hudgens:
   # P(Y(0) = 1 | Doomed)
   data$p_Y0__doomed <-  plogis(-1 +
-                               0.25 * data$X1 +
-                               -2 * data$X2 +
+                               0.5 * data$X1 +                                                     
++                               -1 * data$X2*data$X1 +
                                0.5 * data$X3)
   
   # P(Y(0) = 1 | Protect)
@@ -403,10 +403,10 @@ simulate_data_generic <- function(seed = 12345,
   
   # flag to make protected effect = 0
   if(effect_protect){
-    data$p_Y01__immune <- plogis(1 +
-                                 0.1 * data$X1 +
-                                 -1 * data$X2 +
-                                 0.25 * data$X3)
+data$p_Y01__immune <- plogis(-0.5 +                                                            
+                             0.5 * data$X1 +                                                   
+                             -1 * data$X3 * data$X1 +                                          
+                             0.5 * data$X2)
   } else{
     # set probability in immune = to probability of protected without abx
     data$p_Y01__immune <- data$p_Y0__protect
@@ -418,7 +418,7 @@ simulate_data_generic <- function(seed = 12345,
   
   # P(Z | X) ~ Bernoulli(plogis(X1 + X2 + X3))
   # This keeps it ~50% (IQR 0.465,0.5275); min = 0.44, max = 0.67
-  p_Z__X <- plogis(-0.14 + 0.25*data$X1 + 0.1*data$X2 -0.1*data$X3)
+  p_Z__X <- plogis(-0.14 - 0.5*data$X1 + 1*data$X1*data$X2 - 1.2*data$X3)
   
   data$Z <- rbinom(n, 1, p_Z__X )
   data$S <- NA
