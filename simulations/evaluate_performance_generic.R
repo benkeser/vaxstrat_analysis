@@ -187,4 +187,4 @@ summary_df <- all_result_df %>%
     .groups = "drop"
   )
 
-saveRDS(summary_df, paste0("results/generic/", setting, "_summary.Rds"))
+saveRDS(summary_df, paste0("results/generic_new/", setting, "_summary.Rds"))
