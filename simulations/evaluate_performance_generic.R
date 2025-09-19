@@ -287,7 +287,7 @@ summary_df <- all_result_df %>%
     bias_psi_0 = mean(psi_0_diff, na.rm = TRUE),
     var_psi_0 = var(psi_0, na.rm = TRUE),
     mse_psi_0 = mean(psi_0_diff^2, na.rm = TRUE),
-    coverage_psi_10 = mean(psi_0_coverage, na.rm = TRUE),
+    coverage_psi_0 = mean(psi_0_coverage, na.rm = TRUE),
     
     .groups = "drop"
   )
