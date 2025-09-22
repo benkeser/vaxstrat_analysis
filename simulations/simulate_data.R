@@ -8,6 +8,7 @@
 # epsilon <- 1          # where epsilon <= 1 ; if epsilon not 1, violates our assumption
 # n <- 1e5              # Sample size to simulate
 
+#' Function to simulate data to mimic PROVIDE rotavirus trial
 simulate_data_provide <- function(seed = 12345,
                           effect_protect = TRUE,
                           doomed_inflation = 0,
@@ -43,34 +44,14 @@ simulate_data_provide <- function(seed = 12345,
   
   # Principal Strata ------------------------------------------------------------
   
-  # logit(P(Doomed | X)) = -2.16 + 0.81Gender + 0.18HAZ + 0.06Sleep 
-  # data$p_doomed__x <- plogis(-2.16 + 
-  #                            0.81*as.numeric(data$gender == "Male") +
-  #                            0.18*data$wk10_haz +
-  #                            0.06*data$num_hh_sleep)
-  
-  # logit(P(Immune | X)) = 1.29 + -0.30*Gender + 0.10HAZ + -0.09Sleep
-  
-  # data$p_immune__x <- plogis(1.29 +
-  #                              -0.30*as.numeric(data$gender == "Male") +
-  #                              0.10*data$wk10_haz +
-  #                              -0.08*data$num_hh_sleep)
-  
-  # P(Protected | X) = 1 - P(Doomed | X) - P(Immune | X)
-  # data$p_protected__x <- 1 - data$p_doomed__x - data$p_immune__x
-  
-  # ^ not all >0 :(
-  # ~1000 / 1e6 < 0
-  # male with large HAZ
-  
-  # chatgpt recommends softmax? to guarantee [0,1]
+  # Softmax to guarantee [0,1]
 
-  # adjusted from -2.16 to -1.2 to try to get marginal probability closer to observed
+  # adjusted from -2.16 fit in real data to -1.2 to try to get marginal probability closer to observed
   log_odds_doomed__x <- -1.2 + 0.81*as.numeric(data$gender == 1) +
     0.18*data$wk10_haz +
     0.06*data$num_hh_sleep 
   
-  # adjusted from 1.29 to 1.5 to try to get marginal probability closer to observed
+  # adjusted from 1.29 fit in real data to 1.5 to try to get marginal probability closer to observed
   log_odds_immune__x <- 1.5 - 0.30*as.numeric(data$gender == 1) +
     0.10*data$wk10_haz -
     0.08*data$num_hh_sleep 
@@ -78,7 +59,7 @@ simulate_data_provide <- function(seed = 12345,
   # increase immune
   log_odds_immune__x <- log_odds_immune__x + immune_delta
   
-  # increase protected (by decreasing doomed and immune???)
+  # increase protected (decreasing doomed and immune)
   log_odds_doomed__x <- log_odds_doomed__x + protected_delta
   log_odds_immune__x <- log_odds_immune__x + protected_delta
   
@@ -96,24 +77,6 @@ simulate_data_provide <- function(seed = 12345,
   data$stratum <- apply(probs, 1, function(p) sample(strata, size = 1, prob = p))
   
   #table(data$stratum) / (sum(table(data$stratum)))
-  # true marginal probabilities = 17% doomed, 64% immune, 19% protected
-  # marginally 7.3% doomed, 60.2% immune, 32.4% protected based on original models
-  # tweaking intercepts --> 15% doomed, 59% immune, 26% protected 
-  # close enough and maybe good to have more protected in simulation??
-  
-  #table(data$stratum) / (sum(table(data$stratum)))
-  
-  # original
-  # Doomed    Immune Protected 
-  # 0.14778   0.59388   0.25834 
-  
-  # increase immune, keep ratio (immune_delta = 1) -- roughly same ratio
-  # Doomed    Immune Protected 
-  # 0.07757   0.79235   0.13008 
-  
-  # increase immune, increase protected (to increase VE ) (immune_delta = 1, protected_delta = 1.1)
-  # Doomed    Immune Protected 
-  # 0.03038   0.83379   0.13583 
   
   # Outcome Probabilities --------------------------------------------------------
   
@@ -127,7 +90,7 @@ simulate_data_provide <- function(seed = 12345,
   # doomed_inflation <- 0
   # doomed_epsilon <- 1
   
-  # violate hudgens:
+  # violate hudgens doomed assumption:
   # P(Y(0) = 1 | Doomed)
   data$p_abx_0__doomed <-  plogis(-0.70 +
                                     0.78 * as.numeric(data$gender == 1) +
@@ -146,12 +109,8 @@ simulate_data_provide <- function(seed = 12345,
   # P(Y(0) = 1 | Immune) = P(Y(1) = 1 | Immune) = P(Y(1) = 1 | Protect) 
   # Y ~ X | V = 0, S = 0
   
-  # data$p_abx_01__immune <- plogis(-0.29 +
-  #                                   0.41 * as.numeric(data$gender == "Male") +
-  #                                   -0.10 * data$wk10_haz +
-  #                                   0.13 * data$num_hh_sleep)
   
-  # NEW / CHECK IF OK- flag to make protected effect = 0??
+  # flag to make protected effect = 0 if false, default should be true
   if(effect_protect){
     data$p_abx_01__immune <- plogis(-0.29 +
                                       0.41 * as.numeric(data$gender == 1) +
@@ -201,7 +160,6 @@ simulate_data_provide <- function(seed = 12345,
   data$any_abx_wk52[is_protected_v0] <- rbinom(sum(is_protected_v0), 1, data$p_abx_0__protect[is_protected_v0])
   
   return(data)
-  #saveRDS(data, here::here(paste0("sim_data/sim_data_", n, ".Rds")))
   
 }
 
@@ -351,14 +309,14 @@ simulate_data_generic <- function(seed = 12345,
   # X2 - Bernoulli(0.25)
   # X3 - Bernoulli(0.75)
   
-  data$X1 <- rbinom(n, 3, 0.5)
+  data$X1 <- rbinom(n, 1, 0.5)
   data$X2 <- rbinom(n, 1, 0.5)
   data$X3 <- rbinom(n, 1, 0.5)
   
   # Principal Strata ------------------------------------------------------------
   
   data$p_doomed__x <- plogis(-1 + 0.5*data$X1 - 1*data$X1*data$X2 - 0.5*data$X3)
-  data$p_immune__x <- plogis(-1 + 0.1*data$X1 - 1*data$X3*data$X1 - 0.5*data$X3)
+  data$p_immune__x <- plogis(-1 + 0.5*data$X1 - 1*data$X3*data$X1 - 0.5*data$X3)
   data$p_protected__x <- 1 - data$p_doomed__x - data$p_immune__x
   
   # Sample the strata
@@ -386,7 +344,7 @@ simulate_data_generic <- function(seed = 12345,
   # P(Y(0) = 1 | Doomed)
   data$p_Y0__doomed <-  plogis(-1 +
                                0.5 * data$X1 +                                                     
-+                               -1 * data$X2*data$X1 +
+                              -1 * data$X2*data$X1 +
                                0.5 * data$X3)
   
   # P(Y(0) = 1 | Protect)
