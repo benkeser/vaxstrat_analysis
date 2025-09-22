@@ -383,29 +383,37 @@ data$p_Y01__immune <- plogis(-0.5 +
   data$Y <- NA
   
   # Doomed, Z = 1:
-  is_doomed_z1 <- data$stratum == "Doomed" & data$Z == 1
-  data$S[is_doomed_z1] <- 1
-  data$Y[is_doomed_z1] <- rbinom(sum(is_doomed_z1), 1, data$p_Y1__doomed[is_doomed_z1])
-  
-  # Doomed, Z = 0:
-  is_doomed_z0 <- data$stratum == "Doomed" & data$Z == 0
-  data$S[is_doomed_z0] <- 1
-  data$Y[is_doomed_z0] <- rbinom(sum(is_doomed_z0), 1, data$p_Y0__doomed[is_doomed_z0])
+  is_doomed <- data$stratum == "Doomed"
+  data$S0[is_doomed] <- 1
+  data$S1[is_doomed] <- 1
+  data$Y1[is_doomed] <- rbinom(sum(is_doomed), 1, data$p_Y1__doomed[is_doomed])
+  data$Y0[is_doomed] <- rbinom(sum(is_doomed), 1, data$p_Y0__doomed[is_doomed])
+  data$S[is_doomed & data$Z == 1] <- data$S1[is_doomed & data$Z == 1]
+  data$S[is_doomed & data$Z == 0] <- data$S0[is_doomed & data$Z == 0]
+  data$Y[is_doomed & data$Z == 1] <- data$Y1[is_doomed & data$Z == 1]
+  data$Y[is_doomed & data$Z == 0] <- data$Y0[is_doomed & data$Z == 0]
   
   # Immune: 
   is_immune <- data$stratum == "Immune"
-  data$S[is_immune] <- 0
-  data$Y[is_immune] <- rbinom(sum(is_immune), 1, data$p_Y01__immune[is_immune])
+  data$S0[is_immune] <- 1
+  data$S1[is_immune] <- 1
+  data$Y1[is_immune] <- rbinom(sum(is_immune), 1, data$p_Y01__immune[is_immune])
+  data$Y0[is_immune] <- data$Y1[is_immune]
+  data$S[is_immune & data$Z == 1] <- data$S1[is_immune & data$Z == 1]
+  data$S[is_immune & data$Z == 0] <- data$S0[is_immune & data$Z == 0]
+  data$Y[is_immune & data$Z == 1] <- data$Y1[is_immune & data$Z == 1]
+  data$Y[is_immune & data$Z == 0] <- data$Y0[is_immune & data$Z == 0]
   
   # Protected, Z=1:
-  is_protected_z1 <- data$stratum == "Protected" & data$Z == 1
-  data$S[is_protected_z1] <- 0
-  data$Y[is_protected_z1] <- rbinom(sum(is_protected_z1), 1, data$p_Y1__protect[is_protected_z1])
-  
-  # Protected, Z=0: 
-  is_protected_z0 <- data$stratum == "Protected" & data$Z == 0
-  data$S[is_protected_z0] <- 1 
-  data$Y[is_protected_z0] <- rbinom(sum(is_protected_z0), 1, data$p_Y0__protect[is_protected_z0])
+  is_protected <- data$stratum == "Protected" 
+  data$S0[is_protected] <- 1
+  data$S1[is_protected] <- 1
+  data$Y1[is_protected] <- rbinom(sum(is_protected), 1, data$p_Y1__protect[is_protected])
+  data$Y0[is_protected] <- rbinom(sum(is_protected), 1, data$p_Y0__protect[is_protected])
+  data$S[is_protected & data$Z == 1] <- data$S1[is_protected & data$Z == 1]
+  data$S[is_protected & data$Z == 0] <- data$S0[is_protected & data$Z == 0]
+  data$Y[is_protected & data$Z == 1] <- data$Y1[is_protected & data$Z == 1]
+  data$Y[is_protected & data$Z == 0] <- data$Y0[is_protected & data$Z == 0]
   
   return(data)
    
