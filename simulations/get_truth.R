@@ -97,7 +97,7 @@ get_truth_provide <- function(config, n = 1e7, seed = 12345){
 get_truth_generic <- function(config, n = 1e7, seed = 12345){
   
   grid <- expand.grid(effect_protect = config$effect_protect,
-                      doomed_inflation = as.numeric(config$doomed_inflation),
+                        doomed_inflation = as.numeric(config$doomed_inflation),
                       protected_epsilon = as.numeric(config$protected_epsilon),
                       doomed_epsilon = as.numeric(config$doomed_epsilon))
   
@@ -130,46 +130,36 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
                                       n = n)
     
     # Naturally infected estimand
-    truth$E_Y1__protected_or_doomed[i] <- mean(big_data$Y[
-      big_data$Z == 1 &
+    truth$E_Y1__protected_or_doomed[i] <- mean(big_data$Y1[
         big_data$stratum %in% c("Protected", "Doomed")
     ])
     
-    truth$E_Y0__protected_or_doomed[i] <- mean(big_data$Y[
-      big_data$Z == 0 &
+    truth$E_Y0__protected_or_doomed[i] <- mean(big_data$Y0[
         big_data$stratum %in% c("Protected", "Doomed")
     ])
     
     # Doomed estimand
-    truth$E_Y1__doomed[i] <- mean(big_data$Y[
-      big_data$Z == 1 &
+    truth$E_Y1__doomed[i] <- mean(big_data$Y1[
         big_data$stratum %in% c("Doomed")
     ])
     
-    truth$E_Y0__doomed[i] <- mean(big_data$Y[
-      big_data$Z == 0 &
+    truth$E_Y0__doomed[i] <- mean(big_data$Y0[
         big_data$stratum %in% c("Doomed")
     ])
     
     # Protected estimand
-    truth$E_Y1__protected[i] <- mean(big_data$Y[
-      big_data$Z == 1 &
+    truth$E_Y1__protected[i] <- mean(big_data$Y1[
         big_data$stratum %in% c("Protected")
     ])
     
-    truth$E_Y0__protected[i] <- mean(big_data$Y[
-      big_data$Z == 0 &
+    truth$E_Y0__protected[i] <- mean(big_data$Y0[
         big_data$stratum %in% c("Protected")
     ])
     
     # Population estimand
-    truth$E_Y1__pop[i] <- mean(big_data$Y[
-      big_data$Z == 1 
-    ])
+    truth$E_Y1__pop[i] <- mean(big_data$Y1)
     
-    truth$E_Y0__pop[i] <- mean(big_data$Y[
-      big_data$Z == 0 
-    ])
+    truth$E_Y0__pop[i] <- mean(big_data$Y0)
     
     nat_inf_bound <- get_bound_nat_inf(big_data, Y_name = "Y", Z_name = "Z", S_name = "S", family = "binomial")
     doomed_bound <- get_bound_doomed(big_data, Y_name = "Y", Z_name = "Z", S_name = "S", family = "binomial")

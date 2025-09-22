@@ -262,6 +262,8 @@ for(fname in files){
   
 }
 
+saveRDS(all_result_df, here::here(paste0("results/generic_new/", setting, "_all.Rds")))
+
 # Summarize bias, variance, MSE, coverage
 summary_df <- all_result_df %>%
   group_by(estimand, method, n) %>%
