@@ -99,7 +99,8 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
   grid <- expand.grid(effect_protect = config$effect_protect,
                         doomed_inflation = as.numeric(config$doomed_inflation),
                       protected_epsilon = as.numeric(config$protected_epsilon),
-                      doomed_epsilon = as.numeric(config$doomed_epsilon))
+                      doomed_epsilon = as.numeric(config$doomed_epsilon),
+                      immune_epsilon = as.numeric(config$immune_epsilon))
   
   truth <- cbind(grid, data.frame(E_Y1__protected_or_doomed = rep(NA, nrow(grid)),
                                   E_Y0__protected_or_doomed = rep(NA, nrow(grid)),
@@ -127,6 +128,7 @@ get_truth_generic <- function(config, n = 1e7, seed = 12345){
                                       doomed_inflation = grid$doomed_inflation[i],
                                       protected_epsilon = grid$protected_epsilon[i], 
                                       doomed_epsilon = grid$doomed_epsilon[i],
+                                      immune_epsilon = grid$immune_epsilon[i],
                                       n = n)
     
     # Naturally infected estimand

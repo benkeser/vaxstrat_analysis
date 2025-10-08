@@ -16,7 +16,7 @@ library(vegrowth)
 library(dplyr)
 
 # Path to projects folder where results will be saved
-project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic_new/"
+project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic_ER/"
 
 # command args config setting
 cargs <- commandArgs(trailingOnly = TRUE)
@@ -54,7 +54,8 @@ for(fname in files){
                       effect_protect = config$effect_protect,
                       doomed_inflation = as.numeric(config$doomed_inflation),
                       protected_epsilon = as.numeric(config$protected_epsilon),
-                      doomed_epsilon = as.numeric(config$doomed_epsilon))
+                      doomed_epsilon = as.numeric(config$doomed_epsilon),
+                      immune_epsilon = as.numeric(config$immune_epsilon))
   
   for(i in 1:nrow(grid)){
     
@@ -67,10 +68,12 @@ for(fname in files){
       doomed_inflation = grid$doomed_inflation[i],
       protected_epsilon = grid$protected_epsilon[i],
       dooomed_epsilon = grid$doomed_epsilon[i],
-      estimand = c(rep("nat_inf",4),
+      immune_epsilon = grid$immune_epsilon[i],
+      estimand = c(rep("nat_inf",7),
                    rep("doomed",3),
                    rep("pop",3)),
       method = c(c("gcomp", "ipw", "aipw", "tmle"),
+                 c("gcomp_ER", "ipw_ER", "aipw_ER"),
                  c("gcomp", "ipw", "aipw"),
                  c("gcomp", "ipw", "aipw")),
       # Additive estimate and confidence interval
@@ -79,6 +82,9 @@ for(fname in files){
           res$nat_inf$ipw$pt_est['additive_effect'],
           res$nat_inf$aipw$pt_est['additive_effect'],
           res$nat_inf$tmle$pt_est['additive_effect']),
+        c(res$nat_inf$gcomp_ER$pt_est['additive_effect'],
+          res$nat_inf$ipw_ER$pt_est['additive_effect'],
+          res$nat_inf$aipw_ER$pt_est['additive_effect']),
         c(res$doomed$gcomp$pt_est['additive_effect'],
           res$doomed$ipw$pt_est['additive_effect'],
           res$doomed$aipw$pt_est['additive_effect']),
@@ -91,6 +97,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$lower_ci_additive,
           res$nat_inf$aipw$pt_est['additive_effect'] - 1.96*res$nat_inf$aipw$pt_est['additive_se'],
           res$nat_inf$tmle$pt_est['additive_effect'] - 1.96*res$nat_inf$tmle$pt_est['additive_se']),
+        c(res$nat_inf$gcomp_ER$boot_se$lower_ci_additive,
+          res$nat_inf$ipw_ER$boot_se$lower_ci_additive,
+          res$nat_inf$aipw_ER$pt_est['additive_effect'] - 1.96*res$nat_inf$aipw_ER$pt_est['additive_se']),
         c(res$doomed$gcomp$boot_se$lower_ci_additive,
           res$doomed$ipw$boot_se$lower_ci_additive,
           res$doomed$aipw$pt_est['additive_effect'] - 1.96*res$doomed$aipw$pt_est['additive_se']),
@@ -103,6 +112,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$upper_ci_additive,
           res$nat_inf$aipw$pt_est['additive_effect'] + 1.96*res$nat_inf$aipw$pt_est['additive_se'],
           res$nat_inf$tmle$pt_est['additive_effect'] + 1.96*res$nat_inf$tmle$pt_est['additive_se']),
+        c(res$nat_inf$gcomp_ER$boot_se$upper_ci_additive,
+          res$nat_inf$ipw_ER$boot_se$upper_ci_additive,
+          res$nat_inf$aipw_ER$pt_est['additive_effect'] + 1.96*res$nat_inf$aipw_ER$pt_est['additive_se']),
         c(res$doomed$gcomp$boot_se$upper_ci_additive,
           res$doomed$ipw$boot_se$upper_ci_additive,
           res$doomed$aipw$pt_est['additive_effect'] + 1.96*res$doomed$aipw$pt_est['additive_se']),
@@ -116,6 +128,9 @@ for(fname in files){
           exp(as.numeric(res$nat_inf$ipw$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$nat_inf$aipw$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$nat_inf$tmle$pt_est['log_multiplicative_effect']))),
+        c(exp(as.numeric(res$nat_inf$gcomp_ER$pt_est['log_multiplicative_effect'])),
+          exp(as.numeric(res$nat_inf$ipw_ER$pt_est['log_multiplicative_effect'])),
+          exp(as.numeric(res$nat_inf$aipw_ER$pt_est['log_multiplicative_effect']))),
         c(exp(as.numeric(res$doomed$gcomp$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$doomed$ipw$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$doomed$aipw$pt_est['log_multiplicative_effect']))),
@@ -128,6 +143,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$lower_ci_mult,
           exp(res$nat_inf$aipw$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$aipw$pt_est['log_multiplicative_se']),
           exp(res$nat_inf$tmle$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$tmle$pt_est['log_multiplicative_se'])),
+        c(res$nat_inf$gcomp_ER$boot_se$lower_ci_mult,
+          res$nat_inf$ipw_ER$boot_se$lower_ci_mult,
+          exp(res$nat_inf$aipw_ER$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$aipw_ER$pt_est['log_multiplicative_se'])),
         c(res$doomed$gcomp$boot_se$lower_ci_mult,
           res$doomed$ipw$boot_se$lower_ci_mult,
           exp(res$doomed$aipw$pt_est['log_multiplicative_effect'] - 1.96*res$doomed$aipw$pt_est['log_multiplicative_se'])),
@@ -140,6 +158,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$upper_ci_mult,
           exp(res$nat_inf$aipw$pt_est['log_multiplicative_effect'] + 1.96*res$nat_inf$aipw$pt_est['log_multiplicative_se']),
           exp(res$nat_inf$tmle$pt_est['log_multiplicative_effect'] + 1.96*res$nat_inf$tmle$pt_est['log_multiplicative_se'])),
+        c(res$nat_inf$gcomp_ER$boot_se$upper_ci_mult,
+          res$nat_inf$ipw_ER$boot_se$upper_ci_mult,
+          exp(res$nat_inf$aipw_ER$pt_est['log_multiplicative_effect'] + 1.96*res$nat_inf$aipw_ER$pt_est['log_multiplicative_se'])),
         c(res$doomed$gcomp$boot_se$upper_ci_mult,
           res$doomed$ipw$boot_se$upper_ci_mult,
           exp(res$doomed$aipw$pt_est['log_multiplicative_effect'] + 1.96*res$doomed$aipw$pt_est['log_multiplicative_se'])),
@@ -153,6 +174,9 @@ for(fname in files){
           res$nat_inf$ipw$pt_est['psi_1'],
           res$nat_inf$aipw$pt_est['psi_1'],
           res$nat_inf$tmle$pt_est['psi_1']),
+        c(res$nat_inf$gcomp_ER$pt_est['psi_1'],
+          res$nat_inf$ipw_ER$pt_est['psi_1'],
+          res$nat_inf$aipw_ER$pt_est['psi_1']),
         c(res$doomed$gcomp$pt_est['psi_1'],
           res$doomed$ipw$pt_est['psi_1'],
           res$doomed$aipw$pt_est['psi_1']),
@@ -165,6 +189,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$lower_ci_psi_1,
           res$nat_inf$aipw$pt_est['psi_1'] - 1.96*res$nat_inf$aipw$pt_est['se_psi_1'],
           res$nat_inf$tmle$pt_est['psi_1'] - 1.96*res$nat_inf$tmle$pt_est['se_psi_1']),
+        c(res$nat_inf$gcomp_ER$boot_se$lower_ci_psi_1,
+          res$nat_inf$ipw_ER$boot_se$lower_ci_psi_1,
+          res$nat_inf$aipw_ER$pt_est['psi_1'] - 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_1']),
         c(res$doomed$gcomp$boot_se$lower_ci_additive,
           res$doomed$ipw$boot_se$lower_ci_additive,
           res$doomed$aipw$pt_est['psi_1'] - 1.96*res$doomed$aipw$pt_est['se_psi_1']),
@@ -177,6 +204,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$upper_ci_psi_1,
           res$nat_inf$aipw$pt_est['psi_1'] + 1.96*res$nat_inf$aipw$pt_est['se_psi_1'],
           res$nat_inf$tmle$pt_est['psi_1'] + 1.96*res$nat_inf$tmle$pt_est['se_psi_1']),
+        c(res$nat_inf$gcomp_ER$boot_se$upper_ci_psi_1,
+          res$nat_inf$ipw_ER$boot_se$upper_ci_psi_1,
+          res$nat_inf$aipw_ER$pt_est['psi_1'] + 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_1']),
         c(res$doomed$gcomp$boot_se$upper_ci_psi_1,
           res$doomed$ipw$boot_se$upper_ci_psi_1,
           res$doomed$aipw$pt_est['psi_1'] + 1.96*res$doomed$aipw$pt_est['se_psi_1']),
@@ -191,6 +221,9 @@ for(fname in files){
           res$nat_inf$ipw$pt_est['psi_0'],
           res$nat_inf$aipw$pt_est['psi_0'],
           res$nat_inf$tmle$pt_est['psi_0']),
+        c(res$nat_inf$gcomp_ER$pt_est['psi_0'],
+          res$nat_inf$ipw_ER$pt_est['psi_0'],
+          res$nat_inf$aipw_ER$pt_est['psi_0']),
         c(res$doomed$gcomp$pt_est['psi_0'],
           res$doomed$ipw$pt_est['psi_0'],
           res$doomed$aipw$pt_est['psi_0']),
@@ -203,6 +236,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$lower_ci_psi_0,
           res$nat_inf$aipw$pt_est['psi_0'] - 1.96*res$nat_inf$aipw$pt_est['se_psi_0'],
           res$nat_inf$tmle$pt_est['psi_0'] - 1.96*res$nat_inf$tmle$pt_est['se_psi_0']),
+        c(res$nat_inf$gcomp_ER$boot_se$lower_ci_psi_0,
+          res$nat_inf$ipw_ER$boot_se$lower_ci_psi_0,
+          res$nat_inf$aipw_ER$pt_est['psi_0'] - 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_0']),
         c(res$doomed$gcomp$boot_se$lower_ci_additive,
           res$doomed$ipw$boot_se$lower_ci_additive,
           res$doomed$aipw$pt_est['psi_0'] - 1.96*res$doomed$aipw$pt_est['se_psi_0']),
@@ -215,6 +251,9 @@ for(fname in files){
           res$nat_inf$ipw$boot_se$upper_ci_psi_0,
           res$nat_inf$aipw$pt_est['psi_0'] + 1.96*res$nat_inf$aipw$pt_est['se_psi_0'],
           res$nat_inf$tmle$pt_est['psi_0'] + 1.96*res$nat_inf$tmle$pt_est['se_psi_0']),
+        c(res$nat_inf$gcomp_ER$boot_se$upper_ci_psi_0,
+          res$nat_inf$ipw_ER$boot_se$upper_ci_psi_0,
+          res$nat_inf$aipw_ER$pt_est['psi_0'] + 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_0']),
         c(res$doomed$gcomp$boot_se$upper_ci_psi_0,
           res$doomed$ipw$boot_se$upper_ci_psi_0,
           res$doomed$aipw$pt_est['psi_0'] + 1.96*res$doomed$aipw$pt_est['se_psi_0']),
@@ -226,19 +265,19 @@ for(fname in files){
       
       
       # Truth
-      additive_truth = c(rep(truth$effect_nat_inf[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 4), 
-                         rep(truth$effect_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3), 
-                         rep(truth$effect_pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3)),
-      mult_truth = c(rep(truth$effect_nat_inf_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 4),
-                     rep(truth$effect_doomed_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3),
-                     rep(truth$effect_pop_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3)),
+      additive_truth = c(rep(truth$effect_nat_inf[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 7), 
+                         rep(truth$effect_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3), 
+                         rep(truth$effect_pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3)),
+      mult_truth = c(rep(truth$effect_nat_inf_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 7),
+                     rep(truth$effect_doomed_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3),
+                     rep(truth$effect_pop_mult[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3)),
       
-      psi_1_truth = c(rep(truth$E_Y1__protected_or_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 4), 
-                         rep(truth$E_Y1__doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3), 
-                         rep(truth$E_Y1__pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3)),
-      psi_0_truth = c(rep(truth$E_Y0__protected_or_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 4), 
-                         rep(truth$E_Y0__doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3), 
-                         rep(truth$E_Y0__pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i]], 3))
+      psi_1_truth = c(rep(truth$E_Y1__protected_or_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 7), 
+                         rep(truth$E_Y1__doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3), 
+                         rep(truth$E_Y1__pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3)),
+      psi_0_truth = c(rep(truth$E_Y0__protected_or_doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 7), 
+                         rep(truth$E_Y0__doomed[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3), 
+                         rep(truth$E_Y0__pop[truth$doomed_inflation == grid$doomed_inflation[i] & truth$protected_epsilon == grid$protected_epsilon[i] & truth$doomed_epsilon == grid$doomed_epsilon[i] & truth$immune_epsilon == grid$immune_epsilon[i]], 3))
     )
     
     result_df$additive_diff <- result_df$additive_estimate - result_df$additive_truth
