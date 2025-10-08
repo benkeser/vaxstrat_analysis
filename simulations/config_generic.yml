@@ -11,6 +11,7 @@ default:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"
@@ -31,6 +32,28 @@ violate_nat_inf:
   effect_protect: TRUE
   protected_epsilon: [1, 0.75, 0.5, 0.25, 0.1, 0.01]
   doomed_epsilon: 1
+  immune_epsilon: 1
+  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
+  Y_X_S1: "Y ~ X1 * X2 * X3"
+  Y_X_S0: "Y ~ X1 * X2 * X3"
+  S_X: "S ~ X1 * X2 * X3"
+  S_Z_X: NULL
+  Z_X: "Z ~ X1 * X2 * X3"
+  
+violate_immume:
+  n_sample_size:
+    - 250
+    - 500
+    - 1000
+    - 2000
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw", "sens"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1
+  doomed_epsilon: 1
+  immune_epsilon: [1, 0.75, 0.5, 0.25, 0.1, 0.01]
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"
@@ -51,6 +74,7 @@ misspecify_outcome:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ 1"
   Y_X_S0: "Y ~ 1"
@@ -71,6 +95,7 @@ misspecify_infection:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"
@@ -91,6 +116,7 @@ misspecify_vaccine:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"
@@ -111,6 +137,7 @@ misspecify_outcome_infection:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ X1 * X2 * X3"
   Y_X_S1: "Y ~ 1"
   Y_X_S0: "Y ~ 1"
@@ -151,6 +178,7 @@ misspecify_infection_vaccine:
   effect_protect: TRUE
   protected_epsilon: 1
   doomed_epsilon: 1
+  immune_epsilon: 1
   Y_Z_X: "Y ~ Z * X1 * X2 * X3"
   Y_X_S1: "Y ~ X1 * X2 * X3"
   Y_X_S0: "Y ~ X1 * X2 * X3"

@@ -9,7 +9,7 @@ here::i_am("real_data_analysis/real_data_analysis.R")
 
 devtools::load_all("../shigella_projects/packages/vegrowth/")
 
-data <- readRDS("provide_data/per_protocol_data.Rds")
+data <- readRDS("real_data_analysis/provide_data/per_protocol_data.Rds")
 
 # get rid of one obs with missing wk10 haz
 data <- data[!is.na(data$wk10_haz),]
@@ -204,3 +204,33 @@ saveRDS(results_fewer_cov_same_lib, here::here("real_data_analysis/results/resul
 # plot.sens(out, se = TRUE, effect_type = "additive")
 # plot.sens(out, se = TRUE, effect_type = "multiplicative")
 # 
+
+
+
+# added to principal strata paper
+results_fewer_cov_same_lib <- vegrowth::vegrowth(data = one_hot_data, 
+                                                 Y_name = "any_abx_wk52",
+                                                 Z_name = "rotaarm",
+                                                 S_name = "rotaepi",
+                                                 X_name = c("wk10_haz", "num_hh_lt_5", "gender_Female", "gender_Male"),
+                                                 estimand = c("nat_inf", "doomed", "pop"),
+                                                 method = c("gcomp","aipw", "bound", "sens", "ipw"),
+                                                 exclusion_restriction = c(TRUE, FALSE),
+                                                 n_boot = 10,
+                                                 seed = 54321,
+                                                 return_se = TRUE,
+                                                 ml = FALSE,
+                                                 permutation = FALSE,
+                                                 Y_Z_X_library = c("SL.glm", "SL.earth"),
+                                                 Y_X_library = c("SL.glm", "SL.earth"),
+                                                 S_X_library = c("SL.glm", "SL.earth"),
+                                                 S_Z_X_library = c("SL.glm", "SL.earth"),
+                                                 Y_X_S1_model = "any_abx_wk52 ~ 1",
+                                                 # Y_Z_X_model = "any_abx_wk52 ~ rotaarm + wk10_haz + num_hh_lt_5 + num_hh_sleep +
+                                                 #               inco + elec + gas + tv + toil_Septic_tank_or_toilet +
+                                                 #               toil_Water_sealed_or_slap_latrine + toil_Pit_latrine + toil_Open_latrine +
+                                                 #               toil_Hanging_latrine + food_avail_Deficit_whole_year + food_avail_Sometimes_deficit +
+                                                 #               food_avail_Neither_deficit_nor_surplus + food_avail_Surplus",
+                                                 family = "binomial",
+                                                 return_models = FALSE,
+                                                 effect_dir = "negative")

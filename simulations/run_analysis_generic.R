@@ -31,7 +31,7 @@ plan(multisession, workers = ncores)
 # future::plan("multicore", workers = ncores)
 
 # Path to projects folder where results will be saved
-project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic_new/"
+project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/generic_ER/"
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 setting <- Sys.getenv("SETTING")
 
@@ -52,7 +52,8 @@ grid <- expand.grid(seed = seed,
                     effect_protect = config$effect_protect,
                     doomed_inflation = as.numeric(config$doomed_inflation),
                     protected_epsilon = as.numeric(config$protected_epsilon),
-                    doomed_epsilon = as.numeric(config$doomed_epsilon))
+                    doomed_epsilon = as.numeric(config$doomed_epsilon),
+                    immune_epsilon = as.numeric(config$immune_epsilon))
 
 results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
   
@@ -63,6 +64,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 doomed_inflation = grid$doomed_inflation[i],
                                 protected_epsilon = grid$protected_epsilon[i], 
                                 doomed_epsilon = grid$doomed_epsilon[i],
+                                immune_epsilon = grid$immune_epsilon[i],
                                 n = grid$n_sample_size[i])
   
   results <- vegrowth::vegrowth(data = data, 
@@ -72,6 +74,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 X_name = c("X1", "X2", "X3"),
                                 estimand = config$estimand,
                                 method = config$method,
+                                exclusion_restriction = c(TRUE, FALSE), # do for both exclusion restriction scenarios
                                 n_boot = 1000,
                                 seed = seed,
                                 return_se = TRUE,
@@ -99,7 +102,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
   
   return(results)
   
-}, grid = grid, future.seed = TRUE)
+}, grid = grid, future.seed = seed)
 
 # full_results <- do.call(rbind, results)
 
