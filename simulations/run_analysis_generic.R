@@ -68,7 +68,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                                 immune_epsilon = grid$immune_epsilon[i],
                                 n = grid$n_sample_size[i])
   
-  results <- vegrowth::vegrowth(data = data, 
+  results <- vegrowth(data = data, 
                                 Y_name = "Y",
                                 Z_name = "Z",
                                 S_name = "S",
