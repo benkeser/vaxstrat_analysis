@@ -89,7 +89,7 @@ for(fname in files){
       mult_estimate = c(
         c(exp(as.numeric(res$nat_inf$aipw_CW$pt_est['log_multiplicative_effect'])),
           exp(as.numeric(res$nat_inf$aipw_ER$pt_est['log_multiplicative_effect'])),
-          exp(as.numeric(res$nat_inf$aipw_ER_CW$pt_est['log_multiplicative_effect']))),
+          exp(as.numeric(res$nat_inf$aipw_ER_CW$pt_est['log_multiplicative_effect'])))),
       mult_lower_ci = c(
           exp(res$nat_inf$aipw_CW$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$aipw_CW$pt_est['log_multiplicative_se']),
           exp(res$nat_inf$aipw_ER$pt_est['log_multiplicative_effect'] - 1.96*res$nat_inf$aipw_ER$pt_est['log_multiplicative_se']),
@@ -106,7 +106,7 @@ for(fname in files){
       psi_1_lower_ci = c(
           res$nat_inf$aipw_CW$pt_est['psi_1'] - 1.96*res$nat_inf$aipw_CW$pt_est['se_psi_1'],
           res$nat_inf$aipw_ER$pt_est['psi_1'] - 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_1'],
-          res$nat_inf$aipw_ER_CW$pt_est['psi_1'] - 1.96*res$nat_inf$aipw_ER_CW$pt_est['se_psi_1'])),
+          res$nat_inf$aipw_ER_CW$pt_est['psi_1'] - 1.96*res$nat_inf$aipw_ER_CW$pt_est['se_psi_1']),
       psi_1_upper_ci = c(
           res$nat_inf$aipw_CW$pt_est['psi_1'] + 1.96*res$nat_inf$aipw_CW$pt_est['se_psi_1'],
           res$nat_inf$aipw_ER$pt_est['psi_1'] + 1.96*res$nat_inf$aipw_ER$pt_est['se_psi_1'],
