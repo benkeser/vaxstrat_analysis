@@ -27,11 +27,14 @@ sens_plot <- ggplot(sens_res_df, aes(x = epsilon, y = additive_effect)) +
   geom_hline(yintercept = est_at1, linetype = "dashed", color = "gray2") +
   annotate(
     "text",
-    x = 1.02,  
+    x = 1.02,
     y = est_at1 + 0.15,
     hjust = 0,
-    label = bquote(psi[1] - psi[0] == .(round(est_at1, 2)) ~ 
-                     " (" * .(round(lower_at1, 2)) * ", " * .(round(upper_at1, 2)) * ")"),
+    label = sprintf(
+      "psi[1] - psi[0] == %.2f ~ '(' * %.2f * ',' * %.2f * ')'",
+      est_at1, lower_at1, upper_at1
+    ),
+    parse = TRUE,
     size = 5,
     color = "gray2"
   ) +
@@ -73,14 +76,17 @@ sens_plot_delta <- ggplot(sens_res_df, aes(x = epsilon, y = t)) +
   geom_hline(yintercept = est_at1, linetype = "dashed", color = "gray2") +
   annotate(
     "text",
-    x = 1.02,  
+    x = 1.02,
     y = est_at1 + 0.15,
     hjust = 0,
-    label = bquote(psi[1] - psi[0] == .(round(est_at1, 2)) ~ 
-                     " (" * .(round(lower_at1, 2)) * ", " * .(round(upper_at1, 2)) * ")"),
+    label = sprintf(
+      "psi[1] - psi[0] == %.2f ~ '(' * %.2f * ',' * %.2f * ')'",
+      est_at1, lower_at1, upper_at1
+    ),
+    parse = TRUE,
     size = 5,
     color = "gray2"
-  ) +
+  ) + 
   geom_vline(xintercept = 1, linetype = "dashed", color = "gray2") +
   labs(
     x = expression(epsilon),

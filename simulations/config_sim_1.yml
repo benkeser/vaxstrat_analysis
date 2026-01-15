@@ -1,0 +1,72 @@
+default:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
+  Y_X_S1: "Y ~ X1 * X2 * X3"
+  Y_X_S0: "Y ~ X1 * X2 * X3"
+  S_X: "S ~ X1 * X2 * X3"
+  S_Z_X: NULL
+  Z_X: "Z ~ X1 * X2 * X3"
+  
+violate_cw:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
+  Y_X_S1: "Y ~ X1 * X2 * X3"
+  Y_X_S0: "Y ~ X1 * X2 * X3"
+  S_X: "S ~ X1 * X2 * X3"
+  S_Z_X: NULL
+  Z_X: "Z ~ X1 * X2 * X3"
+  
+violate_er:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
+  Y_X_S1: "Y ~ X1 * X2 * X3"
+  Y_X_S0: "Y ~ X1 * X2 * X3"
+  S_X: "S ~ X1 * X2 * X3"
+  S_Z_X: NULL
+  Z_X: "Z ~ X1 * X2 * X3"
+  
+violate_cw_er:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  Y_Z_X: "Y ~ Z * X1 * X2 * X3"
+  Y_X_S1: "Y ~ X1 * X2 * X3"
+  Y_X_S0: "Y ~ X1 * X2 * X3"
+  S_X: "S ~ X1 * X2 * X3"
+  S_Z_X: NULL
+  Z_X: "Z ~ X1 * X2 * X3"
+  

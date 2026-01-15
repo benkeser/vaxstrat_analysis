@@ -163,7 +163,6 @@ simulate_data_provide <- function(seed = 12345,
   
 }
 
-# Function to simulate generic data 
 simulate_data_contour <- function(seed = 12345,
                                   effect_protect = TRUE,
                                   doomed_inflation = 0,

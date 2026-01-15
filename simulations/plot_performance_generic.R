@@ -38,11 +38,13 @@ df_add <- df %>%
       TRUE ~ estimand  
     ),
     method = case_when(
-      method == "aipw" ~ "AIPW",
+      method == "aipw" ~ "AIPW (CW)", # aipw = aipw (CW) for doomed ?
+      method == "aipw_CW" ~ "AIPW (CW)",
       method == "tmle" ~ "TMLE",
       method == "ipw" ~ "IPW",
       method == "gcomp" ~ "G-computation",
       method == "aipw_ER" ~ "AIPW (ER)",
+      method == "aipw_ER_CW" ~ "AIPW (ER + CW)",
       method == "ipw_ER" ~ "IPW (ER)",
       method == "gcomp_ER" ~ "G-computation (ER)",
       TRUE ~ method  
