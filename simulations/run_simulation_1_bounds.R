@@ -12,9 +12,9 @@ here::i_am("run_simulation_1_bounds.R")
 
 source(here::here("simulate_data.R"))
 
-devtools::load_all("~/Documents/shigella_projects/packages/vegrowth")
+#devtools::load_all("~/Documents/shigella_projects/packages/vegrowth")
 
-# library(vegrowth)
+library(vegrowth)
 library(future.apply)
 library(SuperLearner)
 
