@@ -90,6 +90,23 @@ simulate_data_provide <- function(seed = 12345,
   # doomed_inflation <- 0
   # doomed_epsilon <- 1
   
+  data$p_abx_0__doomed <-  plogis(-0.70 +
+                                    0.78 * as.numeric(data$gender == 1) +
+                                    -1.44 * data$wk10_haz +
+                                    0.49 * data$num_hh_sleep)
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  # ---------------------------------------------
+  # Old
+  
   # violate hudgens doomed assumption:
   # P(Y(0) = 1 | Doomed)
   data$p_abx_0__doomed <-  plogis(-0.70 +
@@ -112,18 +129,20 @@ simulate_data_provide <- function(seed = 12345,
   
   # flag to make protected effect = 0 if false, default should be true
   if(effect_protect){
-    data$p_abx_01__immune <- plogis(-0.29 +
+    data$p_abx_0__immune <- plogis(-0.29 +
                                       0.41 * as.numeric(data$gender == 1) +
                                       -0.10 * data$wk10_haz +
                                       0.13 * data$num_hh_sleep)
+    data$p_abx_1__immune <- data$p_abx_0__immune # these need to be equal for the exclusion restriction
   } else{
     # set probability in immune = to probability of protected without abx
-    data$p_abx_01__immune <- data$p_abx_0__protect
+    data$p_abx_0__immune <- data$p_abx_0__protect
+    data$p_abx_1__immune <- data$p_abx_0__immune
   }
   
-  data$p_abx_1__protect <- data$p_abx_01__immune * protected_epsilon
+  data$p_abx_1__protect <- data$p_abx_1__immune * protected_epsilon
   
-  data$p_abx_1__protect <- plogis(qlogis(data$p_abx_1__protect) + protected_inflation)
+  data$p_abx_1__protect <- plogis(qlogis(data$p_abx_1__protect) + protected_inflation) # FIX this violates our cross world by making abx 1 protect != abx 1 immune
   
   # Vaccine & Rotaepi ------------------------------------------------------------
   
