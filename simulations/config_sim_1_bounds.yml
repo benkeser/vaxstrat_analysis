@@ -1,0 +1,365 @@
+default:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["bound", "cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1"
+  
+violate_cw_X1:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["bound", "cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1"
+ 
+violate_er_X1:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["bound", "cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1"
+  
+violate_cw_er_X1:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["bound", "cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1"
+  
+cw_er_X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X2"
+  
+violate_cw_X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X2"
+ 
+violate_er_X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X2"
+  
+violate_cw_er_X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X2"
+  
+cw_er_X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X3"
+  
+violate_cw_X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X3"
+ 
+violate_er_X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X3"
+  
+violate_cw_er_X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X3"
+  
+cw_er_X1X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2"
+  
+violate_cw_X1X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2"
+ 
+violate_er_X1X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X2"
+  
+violate_cw_er_X1X2:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X2"
+  
+cw_er_X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X2X3"
+  
+violate_cw_X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2"
+ 
+violate_er_X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X2X3"
+  
+violate_cw_er_X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X2X3"
+  
+cw_er_X1X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X3"
+  
+violate_cw_X1X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2"
+ 
+violate_er_X1X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X3"
+  
+violate_cw_er_X1X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X3"
+  
+cw_er_X1X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2X3"
+  
+violate_cw_X1X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  X: "X1X2"
+ 
+violate_er_X1X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X2X3"
+  
+violate_cw_er_X1X2X3:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["cov_adj_bound"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 0.5
+  doomed_epsilon: 1
+  immune_epsilon: 0.5
+  X: "X1X2X3"
+  
+  
