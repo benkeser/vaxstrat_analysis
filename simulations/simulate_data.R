@@ -106,7 +106,7 @@ simulate_data_provide <- function(seed = 12345,
   # should equal P(Y(1) = 1 | Immune, X) to satisfy partial principal ignorability
   # required for identification of the Naturally Infected Estimand
   # use protected_epsilon to violate this assumption
-  data$p_abx_1__immune <- data$p_abx_1__protect * protected_epsilon
+  data$p_abx_1__protect <- data$p_abx_1__immune * protected_epsilon
 
   # P(Y(0) = 1 | Protected, X)
   # protected_inflation controls size of effect in Protected principal stratum
