@@ -97,6 +97,21 @@ best_deltas <- function(deltas, doomed, immune, protected){
   best_deltas
 }
 
+# Final settings:
+# Immune 40, VE 66
+best_deltas(deltas, doomed = 0.20, immune = 0.40, protected = 0.40)
+
+# Immune 60, VE 66
+best_deltas(deltas, doomed = 0.13, immune = 0.60, protected = 0.27)
+
+# Immune 40, VE 50
+best_deltas(deltas, doomed = 0.30, immune = 0.40, protected = 0.30)
+
+
+# Immune 40, VE 85
+
+
+# ------------------------------------------------------------------------
 best_deltas(deltas, doomed = 0.23, immune = 0.30, protected = 0.47)
 best_deltas(deltas, doomed = 0.20, immune = 0.40, protected = 0.40)
 best_deltas(deltas, doomed = 0.17, immune = 0.50, protected = 0.33)
