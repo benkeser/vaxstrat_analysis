@@ -6,7 +6,11 @@ library(ggplot2)
 
 here::i_am("real_data_analysis/sensitivity_figure.R")
 
-results <- readRDS(here::here("real_data_analysis/results/results_fewer_cov_same_lib.Rds"))
+#results <- readRDS(here::here("real_data_analysis/results/results_fewer_cov_same_lib.Rds"))
+#results <- readRDS(here::here("real_data_analysis/results/sensitivity_analysis_results.Rds"))
+results <- readRDS(here::here("real_data_analysis/results/main_results_ML.Rds"))
+
+
 
 sens_res <- results$nat_inf$sens
 sens_res_df <- data.frame(epsilon = sens_res$pt_est$epsilon,
@@ -31,7 +35,7 @@ sens_plot <- ggplot(sens_res_df, aes(x = epsilon, y = additive_effect)) +
     y = est_at1 + 0.15,
     hjust = 0,
     label = sprintf(
-      "psi[1] - psi[0] == %.2f ~ '(' * %.2f * ',' * %.2f * ')'",
+      "psi[1*','*PI*','*epsilon*','*n] - psi[0*','*n] == %.2f ~ '(' * %.2f * ',' * %.2f * ')'",
       est_at1, lower_at1, upper_at1
     ),
     parse = TRUE,
@@ -41,7 +45,7 @@ sens_plot <- ggplot(sens_res_df, aes(x = epsilon, y = additive_effect)) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "gray2") +
   labs(
     x = expression(epsilon),
-    y = expression(psi[1] - psi[0]~"(95 \u0025 CI)")
+    y = expression(psi[1*","*PI*","*epsilon*","*n] - psi[0*","*n] ~ "(95\u0025 CI)") 
   ) +
   theme_minimal(base_size = 16)  +
   scale_x_log10(
@@ -55,8 +59,11 @@ ggsave(here::here("real_data_analysis/results/sens_plot_provide.jpg"), sens_plot
 t <- sens_res_df$psi_1 - sens_res_df$psi_0
 t_star <- 0.5*log((1 + t) / (1 - t)) 
 
-d__dpsi_1 <- 1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
-d__dpsi_0 <- -1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
+# d__dpsi_1 <- 1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
+# d__dpsi_0 <- -1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
+
+d__dpsi_1 <- -1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
+d__dpsi_0 <- 1 / ((sens_res_df$psi_1 - sens_res_df$psi_0)^2 - 1)
 
 se_delta <- vector("numeric", length = length(sens_res$pt_est$cov_matrices))
 

@@ -52,7 +52,7 @@ make_contour <- function(x, y, z_matrix, trace_name) {
       end = levels_global[length(levels_global)],
       size = contour_size ,   
       showlabels = TRUE,
-      labelfont = list(size = 10),
+      labelfont = list(size = 13),
       labeldistance = 50 
     ),
     line = list(width = 2, color = 'black'),
@@ -61,20 +61,20 @@ make_contour <- function(x, y, z_matrix, trace_name) {
   ) %>%
     layout(
       xaxis = list(
-        title = "Protected effect",
+        title = "Protected RD",
         range = x_range,
         tickvals = x_tick_vals,
         ticktext = as.character(x_tick_vals),
-        tickfont = list(size = 14),
-        titlefont = list(size = 16)
+        tickfont = list(size = 16),
+        titlefont = list(size = 20)
       ),
       yaxis = list(
-        title = "Doomed effect",
+        title = "Doomed RD",
         range = y_range,
         tickvals = y_tick_vals,
         ticktext = as.character(y_tick_vals),
-        tickfont = list(size = 14),
-        titlefont = list(size = 16)
+        tickfont = list(size = 16),
+        titlefont = list(size = 20)
       )
     )
 }
@@ -264,46 +264,42 @@ for (row_idx in seq_along(setting_names)) {
   ) %>%
     layout(
       xaxis = list(
-        title = "Protected effect",
+        title = "Protected RD",
         range = x_range,
         tickvals = x_tick_vals,
         ticktext = as.character(x_tick_vals),
-        tickfont = list(size = 14),
-        titlefont = list(size = 16)
+        tickfont = list(size = 16),
+        titlefont = list(size = 20)
       ),
       yaxis = list(
-        title = "Doomed effect",
+        title = "Doomed RD",
         range = y_range,
         tickvals = y_tick_vals,
         ticktext = as.character(y_tick_vals),
-        tickfont = list(size = 14),
-        titlefont = list(size = 16)
+        tickfont = list(size = 16),
+        titlefont = list(size = 20)
       )
     ) %>%
-    # add_polygons(
-    #   data = shade_poly,
-    #   x = ~x, y = ~y,
-    #   fillcolor = "rgba(128,128,128,0.4)",
-    #   line = list(width = 0),
-    #   inherit = FALSE,
-    #   showlegend = FALSE
-    # ) %>%
     add_trace(data = hull_nat_inf_er_cw,
               x = ~effect_protected, y = ~effect_doomed,
               type = "scatter", mode = "lines",
-              line = list(color = "#42B540FF", width = 6.5)) %>%
+              opacity = 0.8,
+              line = list(color = "#42B540FF", width = 7.5)) %>%
     add_trace(data = hull_nat_inf_cw,
               x = ~effect_protected, y = ~effect_doomed,
               type = "scatter", mode = "lines",
-              line = list(color = "#925E9FFF", width = 5)) %>%
+              opacity = 0.8,
+              line = list(color = "#925E9FFF", width = 6)) %>%
     add_trace(data = hull_nat_inf_er,
               x = ~effect_protected, y = ~effect_doomed,
               type = "scatter", mode = "lines",
-              line = list(color = "#00468BFF", width = 5)) %>%
+              opacity = 0.8,
+              line = list(color = "#00468BFF", width = 6)) %>%
     add_trace(data = hull_pop,
               x = ~effect_protected, y = ~effect_doomed,
               type = "scatter", mode = "lines",
-              line = list(color = "#ED0000FF", width = 3.8)) 
+              opacity = 0.8,
+              line = list(color = "#ED0000FF", width = 4.8)) 
   
   # all_rows[[length(all_rows) + 1]] <- fig1
   all_rows[[length(all_rows) + 1]] <- fig2
@@ -339,12 +335,21 @@ final_fig <- do.call(
   )
 )
 
+
+base_panel_height <- 250
+extra_vertical_space <- 350  # space for top + bottom annotations
+
 final_fig <- final_fig %>%
   layout(
-    margin = list(l = 0, r = 0, t = 10, b = 10),  # control spacing between plots
-    height = n_rows * 250  # adjust height for multiple rows
+    height = n_rows * base_panel_height + extra_vertical_space
   )
-final_fig
+
+# final_fig <- final_fig %>%
+#   layout(
+#     margin = list(l = 0, r = 0, t = 10, b = 10),  # control spacing between plots
+#     height = n_rows * 250  # adjust height for multiple rows
+#   )
+# final_fig
 
 # ------------------------------------------------------------------------------
 # Row annotations (left side, centered per row)
@@ -367,7 +372,7 @@ row_annotations <- lapply(seq_len(n_rows), function(i) {
     xanchor = "right",
     yanchor = "middle",
     align = "right",
-    font = list(size = 16)
+    font = list(size = 18)
   )
 })
 
@@ -399,7 +404,7 @@ col_annotations <- lapply(seq_len(n_cols), function(i) {
     showarrow = FALSE,
     xanchor = "center",
     yanchor = "bottom",
-    font = list(size = 18)
+    font = list(size = 20)
   )
 })
 
@@ -415,7 +420,7 @@ final_fig <- final_fig %>%
       cmax = zmax,
       colorbar = list(
         title = list(text = "Effect size", side = "top"),
-        tickfont = list(size = 14)
+        tickfont = list(size = 16)
       )
     ),
     legend = list(
@@ -424,14 +429,14 @@ final_fig <- final_fig %>%
       y = -0.1,
       xanchor = "center",
       yanchor = "top",
-      font = list(size = 16),
+      font = list(size = 17),
       bgcolor = "rgba(255,255,255,0)",
       traceorder = "normal",       # <-- add this
-      itemwidth = 5,              # <-- controls spacing between items
+      itemwidth = -1,              # <-- controls spacing between items
       tracegroupgap = 0            # <-- collapse group gaps
     ),
     annotations = c(row_annotations, col_annotations),
-    margin = list(l = 240, t = 100, b = 240)  # increase bottom margin to fit 2 rows THIS IS WHAT IS BREAKING MY CONTOURS
+    margin = list(l = 260, t = 100, b = 240)  # increase bottom margin to fit 2 rows THIS IS WHAT IS BREAKING MY CONTOURS
   )
 
 final_fig
@@ -446,7 +451,7 @@ htmlwidgets::saveWidget(final_fig, here::here("results/contour/figures/contour_V
 webshot2::webshot(
   here::here("results/contour/figures/contour_VE.html"),
   here::here("results/contour/figures/contour_VE.png"),
-  vwidth = 1800, vheight = 900,
+  vwidth = 1800, vheight = 1300,
   delay = 2
 )
 
