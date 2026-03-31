@@ -10,7 +10,7 @@ library(kableExtra)
 
 here::i_am("real_data_analysis/real_data_analysis.R")
 
-# devtools::load_all("../shigella_projects/packages/vegrowth/")
+# devtools::load_all("../shigella_projects/packages/vaxstrat/")
 library(vaxstrat)
 
 data <- readRDS("real_data_analysis/provide_data/per_protocol_data.Rds")
@@ -80,7 +80,7 @@ saveRDS(results, here::here("real_data_analysis/results/main_results_ML_vaxstrat
 data$gender <- as.numeric(data$gender == "Female")
 
 # covariate adjusted bounds: gender
-results_gender_bound <- vegrowth(data = data, 
+results_gender_bound <- vaxstrat(data = data, 
                                   Y_name = "any_abx_wk52",
                                   Z_name = "rotaarm",
                                   S_name = "rotaepi",
@@ -106,7 +106,7 @@ results_gender_bound <- vegrowth(data = data,
 # covariate adjusted bounds: enr haz (binary)
 data$enr_haz_bin <- ifelse(data$enr_haz < -1, 1, 0)
 
-results_enr_haz_bound <- vegrowth(data = data, 
+results_enr_haz_bound <- vaxstrat(data = data, 
                                  Y_name = "any_abx_wk52",
                                  Z_name = "rotaarm",
                                  S_name = "rotaepi",
@@ -130,7 +130,7 @@ results_enr_haz_bound <- vegrowth(data = data,
 # 0.082 (0.014, 0.160)
 
 data$num_hh_sleep_bin <- ifelse(data$num_hh_sleep < 5, 1, 0)
-results_num_hh_sleep_bound <- vegrowth(data = data, 
+results_num_hh_sleep_bound <- vaxstrat(data = data, 
                                   Y_name = "any_abx_wk52",
                                   Z_name = "rotaarm",
                                   S_name = "rotaepi",
@@ -155,7 +155,7 @@ results_num_hh_sleep_bound <- vegrowth(data = data,
 
 # gender x enr_haz
 data$I_gender_x_enr_haz <- data$gender * data$enr_haz_bin 
-results_I_gender_x_enr_haz_bound <- vegrowth(data = data, 
+results_I_gender_x_enr_haz_bound <- vaxstrat(data = data, 
                                        Y_name = "any_abx_wk52",
                                        Z_name = "rotaarm",
                                        S_name = "rotaepi",
@@ -178,7 +178,7 @@ results_I_gender_x_enr_haz_bound <- vegrowth(data = data,
 
 # gender x num sleep
 data$I_gender_x_num_hh_sleep <- data$gender * data$num_hh_sleep_bin
-results_I_gender_x_num_hh_sleep_bound <- vegrowth(data = data, 
+results_I_gender_x_num_hh_sleep_bound <- vaxstrat(data = data, 
                                              Y_name = "any_abx_wk52",
                                              Z_name = "rotaarm",
                                              S_name = "rotaepi",
@@ -201,7 +201,7 @@ results_I_gender_x_num_hh_sleep_bound <- vegrowth(data = data,
 
 # enr_haz x num_sleep
 data$I_enr_haz_x_num_hh_sleep <- data$enr_haz_bin * data$num_hh_sleep_bin
-results_I_enr_haz_x_num_hh_sleep_bound <- vegrowth(data = data, 
+results_I_enr_haz_x_num_hh_sleep_bound <- vaxstrat(data = data, 
                                                   Y_name = "any_abx_wk52",
                                                   Z_name = "rotaarm",
                                                   S_name = "rotaepi",
@@ -223,7 +223,7 @@ results_I_enr_haz_x_num_hh_sleep_bound <- vegrowth(data = data,
                                                   effect_dir = "negative")
 
 data$I_gender_x_enr_haz_x_num_hh_sleep <- data$gender * data$enr_haz_bin * data$num_hh_sleep_bin
-results_I_all_bound <- vegrowth(data = data, 
+results_I_all_bound <- vaxstrat(data = data, 
                                  Y_name = "any_abx_wk52",
                                  Z_name = "rotaarm",
                                  S_name = "rotaepi",
