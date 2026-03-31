@@ -12,7 +12,7 @@ This repository contains code for simulations and real data analysis accompanyin
 │   └── results/              # Folder to hold results output
 │   └── truth/                # Folder to hold truth output
 │
-└── real_data_analysis/       # PROVIDE data analysis
+└── real_data_analysis/       # PROVIDE data analysis (Section 7)
     ├── bash scripts          # Analysis job scripts
     ├── configuration files   # Analysis parameters
     ├── real_data_analysis.R  # Primary analysis
@@ -31,7 +31,7 @@ This repository contains code for simulations and real data analysis accompanyin
 - `R/` folder contains scripts for running analysis and generating tables (files named corresponding to "simulation_1" and "simulation_1_bounds")
 
 **Outputs:**
-- Supplement Section I.1, Tables 1-5
+- SI.1, Tables 1-5
 
 ### 6.2 Comparing Power of Estimands in Realistic Setting
 
@@ -46,16 +46,16 @@ This repository contains code for simulations and real data analysis accompanyin
 
 Analysis of data from the PROVIDE study 
 
-### Primary Analysis
+### 7. Data analysis
 
 **Files:**
 - `real_data_analysis.R` - Rscript containing main analysis, covariate adjusted bounds, and table generation code
 
 **Outputs:**
 - Main manuscript Table 2 (primary results)
-- Supplement Table 8 (covariate-adjusted bounds)
+- SJ.1, Table 8 (covariate-adjusted bounds)
 
-### Sensitivity Analysis
+### SJ.2 Sensitivity Analysis
 
 **Files:**
 - `sensitivity_analysis.R` - Sensitivity analysis script to read main results and make sensitivity analysis figure
