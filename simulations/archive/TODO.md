@@ -15,23 +15,21 @@
 		- I assume from a human-time-standpoint, it is easier to just keep the structure exactly the same as the generic simulation and go ahead and do it for all the estimators.
 		- ONLY consider the PI and ER satisfied scenario. No need to violate those things. Set `doomed_inflation = 0.1` (or update text in Supp so that it's 0).
 		- We want to compare a cross-fitted estimator vs. non-cross fitted. So the output is like Table S3, except it's 
-		-------------------------------------------------------------
-		PI and ER satisfied
-		estimator     |   cross_fit | sample_size   |  bias | etc...
-		PI            |     yes     |     400       | ....
-		PI            |     no      |     400       | ....
-		ER            |     yes     |     400       | ....
-		ER            |     no      |     400       | ....
-		both          |     yes     |     400       | ....
-		both          |     no      |     400       | ....
-		-------------------------------------------------------------
-		PI            |     yes     |     5000      | ....
-		PI            |     no      |     5000      | ....
-		ER            |     yes     |     5000      | ....
-		ER            |     no      |     5000      | ....
-		both          |     yes     |     5000      | ....
-		both          |     no      |     5000      | ....
-		-------------------------------------------------------------
+		
+| assumptions satisfied | cross_fit | sample_size | bias | etc... |
+|----------------------|----------|------------:|-----:|--------|
+| PI                   | yes      | 400         | .... | ....   |
+| PI                   | no       | 400         | .... | ....   |
+| ER                   | yes      | 400         | .... | ....   |
+| ER                   | no       | 400         | .... | ....   |
+| both                 | yes      | 400         | .... | ....   |
+| both                 | no       | 400         | .... | ....   |
+| PI                   | yes      | 5000        | .... | ....   |
+| PI                   | no       | 5000        | .... | ....   |
+| ER                   | yes      | 5000        | .... | ....   |
+| ER                   | no       | 5000        | .... | ....   |
+| both                 | yes      | 5000        | .... | ....   |
+| both                 | no       | 5000        | .... | ....   |
 
 		- For the ML, you could just do random forest. Or if everything runs through super learner, then do SL.glm and SL.ranger or something. 
 		- Just set cross-fitting folds to 3 or 5 or something small-ish so it runs quickly
@@ -44,5 +42,5 @@
 - Real data analysis
 	- Covariate-adjusted bounds need to be re-run and semiparametric estimator needs to be re-run.
 	- Update text and mark changes
-	
+
 - After supplements are added, double check all references in red to make sure they point to the right place
