@@ -63,7 +63,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type,
                                     protected_delta = grid$protected_delta[i],
                                     n = 700)
   
-  results <- vaxstrat::vaxstrat(data = big_data, 
+  results <- vaxstrat(data = big_data, 
                                 Y_name = "any_abx_wk52",
                                 Z_name = "rotaarm",
                                 S_name = "rotaepi",
