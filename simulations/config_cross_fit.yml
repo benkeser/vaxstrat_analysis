@@ -1,0 +1,27 @@
+default:
+  n_sample_size:
+    - 500
+    - 4000
+  estimand: ["nat_inf"]
+  method: ["aipw"]
+  doomed_inflation: 0.1
+  effect_protect: TRUE
+  protected_epsilon: 1 
+  doomed_epsilon: 1
+  immune_epsilon: 1
+  cf_folds: 5
+  S_X_library:
+    - "SL.glm"
+    - "SL.ranger"
+  S_Z_X_library:
+    - "SL.glm"
+    - "SL.ranger"
+  Y_X_library:
+    - "SL.glm"
+    - "SL.ranger"
+  Y_Z_X_library:
+    - "SL.glm"
+    - "SL.ranger"
+  Z_X_library:
+    - "SL.glm"
+    - "SL.ranger"
