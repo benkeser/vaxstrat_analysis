@@ -11,12 +11,13 @@ here::i_am("R/run_analysis_contour.R")
 source(here::here("R/simulate_data.R"))
 source(here::here("R/SL.wrappers.R"))
 
-#devtools::load_all("../../shigella_projects/packages/vegrowth/")
+# dev repo on cluster
+devtools::load_all("~/vaxstrat")
 
 #library(future)
 library(future.apply)
 library(SuperLearner)
-library(vaxstrat)
+# library(vaxstrat)
 
 # For initial debugging scratch file
 options(echo = TRUE)
@@ -37,9 +38,6 @@ config <- cfg[[setting]]
 # Get seed
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 
-# Generic or provide
-sim_type <- config$sim_type
-
 grid <- expand.grid(seed = seed,
                     effect_protect = config$effect_protect,
                     doomed_inflation = as.numeric(config$doomed_inflation),
@@ -49,81 +47,42 @@ grid <- expand.grid(seed = seed,
                     immune_delta = as.numeric(config$immune_delta),
                     protected_delta = as.numeric(config$protected_delta))
 
-# eliminate combos where inflation in doomed > inflation in nat_inf (in generic version, this is always true for provide)
-if(sim_type == "generic"){
-  grid <- subset(grid, doomed_inflation <= protected_inflation)
-}
-
 results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type, config){
   
   library(SuperLearner)
   library(earth)
   source("/home/acodi/vegrowth_analysis/simulations/R/SL.wrappers.R")
   
-  if(sim_type == "generic"){
-    big_data <- simulate_data_contour(seed = grid$seed[i],
-                                      effect_protect = grid$effect_protect[i],
-                                      doomed_inflation = grid$doomed_inflation[i],
-                                      protected_inflation = grid$protected_inflation[i],
-                                      protected_epsilon = grid$protected_epsilon[i], 
-                                      doomed_epsilon = grid$doomed_epsilon[i],
-                                      n = 2000)
-    
-    results <- vaxstrat::vaxstrat(data = big_data, 
-                                  Y_name = "Y",
-                                  Z_name = "Z",
-                                  S_name = "S",
-                                  X_name = c("X1", "X2", "X3"),
-                                  estimand = c("nat_inf", "doomed", "pop"),
-                                  method = c("aipw"),
-                                  exclusion_restriction = c(TRUE, FALSE),
-                                  cross_world = c(TRUE, FALSE),
-                                  n_boot = 1000,
-                                  seed = seed,
-                                  return_se = TRUE,
-                                  ml = FALSE,
-                                  Y_Z_X_model = config$Y_Z_X,
-                                  Y_X_S1_model = config$Y_X_S1, 
-                                  Y_X_S0_model = config$Y_X_S0,
-                                  S_X_model = config$S_X,
-                                  S_Z_X_model = config$S_Z_X,
-                                  Z_X_model = config$Z_X, 
-                                  family = "binomial",
-                                  return_models = FALSE,
-                                  effect_dir = "positive")
-    
-  } else{
-    big_data <- simulate_data_provide(seed = grid$seed[i],
-                                      effect_protect = grid$effect_protect[i],
-                                      doomed_inflation = grid$doomed_inflation[i],
-                                      protected_inflation = grid$protected_inflation[i],
-                                      protected_epsilon = grid$protected_epsilon[i], 
-                                      doomed_epsilon = grid$doomed_epsilon[i],
-                                      immune_delta = grid$immune_delta[i],
-                                      protected_delta = grid$protected_delta[i],
-                                      n = 700)
-    
-    results <- vaxstrat::vaxstrat(data = big_data, 
-                                  Y_name = "any_abx_wk52",
-                                  Z_name = "rotaarm",
-                                  S_name = "rotaepi",
-                                  X_name = c("wk10_haz", "gender", "num_hh_sleep"),
-                                  estimand = c("nat_inf", "pop"),
-                                  method = c("aipw"),
-                                  exclusion_restriction = c(TRUE, FALSE),
-                                  cross_world = c(TRUE, FALSE),
-                                  n_boot = 1000,
-                                  seed = seed,
-                                  return_se = TRUE,
-                                  ml = TRUE,
-                                  Y_Z_X_library = config$Y_Z_X_library,
-                                  Y_X_library = config$Y_X_library, 
-                                  S_X_library = config$S_X_library,
-                                  S_Z_X_library = config$S_Z_X_library,
-                                  family = "binomial",
-                                  return_models = FALSE,
-                                  effect_dir = "negative")
-  }
+  big_data <- simulate_data_provide(seed = grid$seed[i],
+                                    effect_protect = grid$effect_protect[i],
+                                    doomed_inflation = grid$doomed_inflation[i],
+                                    protected_inflation = grid$protected_inflation[i],
+                                    protected_epsilon = grid$protected_epsilon[i], 
+                                    doomed_epsilon = grid$doomed_epsilon[i],
+                                    immune_delta = grid$immune_delta[i],
+                                    protected_delta = grid$protected_delta[i],
+                                    n = 700)
+  
+  results <- vaxstrat::vaxstrat(data = big_data, 
+                                Y_name = "any_abx_wk52",
+                                Z_name = "rotaarm",
+                                S_name = "rotaepi",
+                                X_name = c("wk10_haz", "gender", "num_hh_sleep"),
+                                estimand = c("nat_inf", "pop"),
+                                method = c("aipw"),
+                                exclusion_restriction = c(TRUE, FALSE),
+                                cross_world = c(TRUE, FALSE),
+                                n_boot = 1000,
+                                seed = seed,
+                                return_se = TRUE,
+                                ml = TRUE,
+                                Y_Z_X_library = config$Y_Z_X_library,
+                                Y_X_library = config$Y_X_library, 
+                                S_X_library = config$S_X_library,
+                                S_Z_X_library = config$S_Z_X_library,
+                                family = "binomial",
+                                return_models = FALSE,
+                                effect_dir = "negative")
   
   results_df <- grid[i,]
   results_df <- cbind(results_df, data.frame(# Naturally infected AIPW
@@ -146,7 +105,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type,
   
   return(results_df)
 
-}, grid = grid, sim_type = sim_type, config = config, future.seed = TRUE)
+}, grid = grid, config = config, future.seed = TRUE)
 
 results <- do.call(rbind, results)
 
