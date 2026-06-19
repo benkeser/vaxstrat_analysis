@@ -17,7 +17,7 @@ source(here::here("R/simulate_data.R"))
 devtools::load_all("~/vaxstrat")
 
 # library(vaxstrat)
-library(future.apply)
+# library(future.apply)
 library(SuperLearner)
 
 # For initial debugging scratch file
@@ -27,9 +27,9 @@ options(echo = TRUE)
 options(future.globals.maxSize = 5 * 1024^3) # 5 GB
 options(future.globals.onReference = "ignore")
 
-ncores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-print(ncores)
-plan(multisession, workers = ncores)
+# ncores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+# print(ncores)
+# plan(multisession, workers = ncores)
 
 project_dir <- "/projects/dbenkes/allison/vegrowth_analysis/results/cross_fit/"
 seed <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
@@ -52,10 +52,8 @@ grid <- expand.grid(seed = seed,
                     doomed_epsilon = as.numeric(config$doomed_epsilon),
                     immune_epsilon = as.numeric(config$immune_epsilon))
 
-results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
-  
-  library(SuperLearner)
-  
+results <- lapply(1:nrow(grid), function(i, grid){
+
   data <- simulate_data_cross_fit(seed = grid$seed[i],
                                   effect_protect = grid$effect_protect[i],
                                   doomed_inflation = grid$doomed_inflation[i],
@@ -90,6 +88,6 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                       id_name = "id")
   return(results)
   
-}, grid = grid, future.seed = seed)
+}, grid = grid)
 
 saveRDS(results, paste0(project_dir, setting, "/", setting, "_overall_seed_", seed, ".Rds"))

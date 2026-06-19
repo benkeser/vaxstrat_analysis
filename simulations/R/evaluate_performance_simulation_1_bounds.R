@@ -12,7 +12,8 @@ here::i_am("R/evaluate_performance_simulation_1_bounds.R")
 source(here::here("simulate_data.R"))
 source(here::here("get_truth.R"))
 
-library(vaxstrat)
+devtools::load_all("~/vaxstrat")
+#library(vaxstrat)
 library(dplyr)
 
 # Path to projects folder where results will be saved

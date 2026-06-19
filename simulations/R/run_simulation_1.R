@@ -53,9 +53,7 @@ grid <- expand.grid(seed = seed,
                     doomed_epsilon = as.numeric(config$doomed_epsilon),
                     immune_epsilon = as.numeric(config$immune_epsilon))
 
-results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
-  
-  library(SuperLearner)
+results <- lapply(1:nrow(grid), function(i, grid){
   
   data <- simulate_data_generic(seed = grid$seed[i],
                                 effect_protect = grid$effect_protect[i],
@@ -89,6 +87,6 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid){
                       epsilon = grid$protected_epsilon[i])
   return(results)
   
-}, grid = grid, future.seed = seed)
+}, grid = grid)
 
 saveRDS(results, paste0(project_dir, setting, "/", setting, "_overall_seed_", seed, ".Rds"))
