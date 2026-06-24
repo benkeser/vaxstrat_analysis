@@ -15,20 +15,21 @@ source(here::here("R/SL.wrappers.R"))
 devtools::load_all("~/vaxstrat")
 
 #library(future)
-library(future.apply)
+#library(future.apply)
 library(SuperLearner)
+library(earth)
 # library(vaxstrat)
 
 # For initial debugging scratch file
 options(echo = TRUE)
 
 # this was for protect, probably can make smaller
-options(future.globals.maxSize = 5 * 1024^3) # 5 GB
-options(future.globals.onReference = "ignore")
+#options(future.globals.maxSize = 5 * 1024^3) # 5 GB
+#options(future.globals.onReference = "ignore")
 
-ncores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
-print(ncores)
-plan(multisession, workers = ncores)
+#ncores <- as.integer(Sys.getenv("SLURM_CPUS_PER_TASK", "1"))
+#print(ncores)
+#plan(multisession, workers = ncores)
 
 # Read config setting
 setting <- Sys.getenv("SETTING")
@@ -47,11 +48,7 @@ grid <- expand.grid(seed = seed,
                     immune_delta = as.numeric(config$immune_delta),
                     protected_delta = as.numeric(config$protected_delta))
 
-results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type, config){
-  
-  library(SuperLearner)
-  library(earth)
-  source("/home/acodi/vegrowth_analysis/simulations/R/SL.wrappers.R")
+results <- lapply(1:nrow(grid), function(i, grid, sim_type, config){ # future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type, config){
   
   big_data <- simulate_data_provide(seed = grid$seed[i],
                                     effect_protect = grid$effect_protect[i],
@@ -105,7 +102,7 @@ results <- future.apply::future_lapply(1:nrow(grid), function(i, grid, sim_type,
   
   return(results_df)
 
-}, grid = grid, config = config, future.seed = TRUE)
+}, grid = grid, config = config)
 
 results <- do.call(rbind, results)
 
