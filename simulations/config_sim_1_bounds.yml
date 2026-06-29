@@ -114,7 +114,7 @@ cw_er_X3:
   doomed_epsilon: 1
   immune_epsilon: 1
   X: "X3"
-  
+
 violate_cw_X3:
   n_sample_size:
     - 500

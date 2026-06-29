@@ -26,7 +26,7 @@ for(i in 1:length(combos$file_name)){
   assumption <- combos$prefix[i]
   covariates <- combos$suffix[i]
   
-  res <- readRDS(here::here("results/sim_1/sim_1_bounds", fname))  
+  res <- readRDS(here::here("results/sim_1_bounds", fname))  
   res$setting <- setting
   res$assumption <- assumption
   res$X <- covariates
@@ -147,3 +147,82 @@ make_latex_table(
   caption = "Bias, Coverage, and Bound Width (n = 4000; Additive)",
   label = "tab:sim1_bounds_n4000"
 )
+
+
+#######
+
+
+format_unadjusted_combined <- function(results_df, n_values = c(500, 4000)) {
+  
+  results_df %>%
+    filter(
+      method == "bound",
+      n %in% n_values
+    ) %>%
+    mutate(
+      Setting = factor(
+        assumption,
+        levels = c("cw_er_", "violate_er_", "violate_cw_", "violate_cw_er_"),
+        labels = c(
+          "\\textbf{PI and ER satisfied}",
+          "\\textbf{PI satisfied, ER violated}",
+          "\\textbf{PI violated, ER satisfied}",
+          "\\textbf{PI and ER violated}"
+        )
+      ),
+      `Bias: Lower` = sqrt(n) * bias_lower_additive,
+      `Bias: Upper` = sqrt(n) * bias_upper_additive,
+      `Bound Width` = paste0(
+        round(median_width_additive, 2),
+        " (",
+        round(q25_width_additive, 2),
+        ", ",
+        round(q75_width_additive, 2),
+        ")"
+      )
+    ) %>%
+    arrange(Setting, n) %>%
+    select(
+      Setting,
+      `$n$` = n,
+      `$\\ell$` = `Bias: Lower`,
+      `$u$` = `Bias: Upper`,
+      `$\\ell$ ` = coverage_lower_bound_additive,
+      `$u$ ` = coverage_upper_bound_additive,
+      Effect = coverage_pt_est_additive,
+      `Med. Width (IQR)` = `Bound Width`
+    )
+}
+
+make_latex_unadjusted_combined <- function(results_df) {
+  
+  combined_unadjusted <- format_unadjusted_combined(results_df)
+  
+  kable(
+    combined_unadjusted,
+    format = "latex",
+    booktabs = TRUE,
+    caption = "Bias, Coverage, and Bound Width for Unadjusted Bounds",
+    label = "sim1_bounds_unadjusted_combined",
+    align = "llcccccc",
+    digits = 3,
+    escape = FALSE
+  ) %>%
+    kable_styling(
+      latex_options = c("hold_position"),
+      font_size = 9
+    ) %>%
+    add_header_above(c(
+      " " = 2,
+      "$n^{1/2} \\times$ Bias" = 2,
+      "Coverage" = 3,
+      " " = 1
+    )) %>%
+    collapse_rows(
+      columns = 1,
+      latex_hline = "major",
+      valign = "top"
+    )
+}
+
+make_latex_unadjusted_combined(results_df)

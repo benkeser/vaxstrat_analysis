@@ -22,7 +22,7 @@ all_rows <- list()
 
 # To compute global min/max for shared color scale
 all_truth <- lapply(setting_names, function(setting) {
-  readRDS(here::here(paste0("results/contour/", setting, "_truth.Rds"))) #%>%
+  readRDS(here::here(paste0("truth/", setting, "_truth.Rds"))) #%>%
     #filter(doomed_inflation < -0.1)
 })
 global_range <- range(unlist(lapply(all_truth, function(truth) {
@@ -314,12 +314,11 @@ for (row_idx in seq_along(setting_names)) {
 
 
 # ------------------------------------------------------------------------------
-# Assemble final 4 x 5 plot (NO nested subplots)
+# Assemble final 4 x 5 plot 
 # ------------------------------------------------------------------------------
 
 n_rows <- length(setting_names)
 n_cols <- 5
-
 
 final_fig <- do.call(
   subplot,

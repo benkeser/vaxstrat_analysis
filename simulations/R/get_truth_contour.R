@@ -6,7 +6,7 @@ here::i_am("R/get_truth_contour.R")
 
 source(here::here("R/simulate_data.R"))
 
-devtools::load_all("../../../shigella_projects/packages/vaxstrat/")
+devtools::load_all("../../shigella_projects/packages/vaxstrat/")
 
 library(SuperLearner)
 library(future.apply)
@@ -14,7 +14,7 @@ library(future.apply)
 options(future.globals.maxSize = 2 * 1024^3)  # 2GB
 options(future.globals.onReference = "ignore")
 
-ncores <- 5
+ncores <- 4
 print(ncores)
 plan(multisession, workers = ncores)
 
@@ -42,7 +42,9 @@ sim_type <- "provide"
 #               "provide_immune_60_ve_85")
 
 settings <- c("provide_immune_40_ve_50",
-              "provide_immune_40_ve_85")
+              "provide_immune_40_ve_85",
+              "provide_immune_40_ve_66",
+              "provide_immune_60_ve_66")
 
 for(setting in settings){
   config <- cfg[[setting]]

@@ -4,9 +4,8 @@
 
 here::i_am("R/make_sim_1_table.R")
 
-here::i_am("R/make_sim_1_table.R")
-
 library(dplyr)
+
 
 # read results 
 default_summary       <- readRDS(here::here("results/sim_1/default_summary.Rds"))
@@ -112,3 +111,4 @@ build_table <- function(summary_list) {
 # ---------------------------------------------------
 
 build_table(summary_list)
+
